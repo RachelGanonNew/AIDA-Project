@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HATHOR_NODE_URL=${HATHOR_NODE_URL:-https://node1.testnet.hathor.network/}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./aida.db}
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+    volumes:
+      - ./backend:/app
+      - aida_data:/app/data
+    depends_on:
+      - frontend
+    restart: unless-stopped
+    networks:
+      - aida-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000}
+      - REACT_APP_HATHOR_NODE_URL=${REACT_APP_HATHOR_NODE_URL:-https://node1.testnet.hathor.network/}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - aida-network
+
+  # Optional: Add a database service for production
+  # postgres:
+  #   image: postgres:15
+  #   environment:
+  #     - POSTGRES_DB=aida
+  #     - POSTGRES_USER=aida_user
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - aida-network
+
+  # Optional: Add Redis for caching
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - aida-network
+
+volumes:
+  aida_data:
+  # postgres_data:
+  # redis_data:
+
+networks:
+  aida-network:
+    driver: bridge 
