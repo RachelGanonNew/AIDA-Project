@@ -197,10 +197,10 @@ class AIService:
                 temperature=0.3
             )
             
-            return response.choices[0].message.content.strip()
-        except Exception as e:
-            logger.error(f"Error generating summary with OpenAI: {e}")
-            return self._get_fallback_summary(text)
+                return response.choices[0].message.content.strip()
+            except Exception as e:
+                logger.error(f"Error generating summary with OpenAI: {e}")
+                return self._get_fallback_summary(text)
         else:
             return self._get_fallback_summary(text)
     
@@ -397,11 +397,11 @@ class AIService:
                 temperature=0.3
             )
             
-            recommendations = response.choices[0].message.content.strip().split('\n')
-            return [rec.strip() for rec in recommendations if rec.strip()]
-        except Exception as e:
-            logger.error(f"Error generating recommendations with OpenAI: {e}")
-            return self._get_fallback_recommendations(analysis_results)
+                recommendations = response.choices[0].message.content.strip().split('\n')
+                return [rec.strip() for rec in recommendations if rec.strip()]
+            except Exception as e:
+                logger.error(f"Error generating recommendations with OpenAI: {e}")
+                return self._get_fallback_recommendations(analysis_results)
         else:
             return self._get_fallback_recommendations(analysis_results)
     

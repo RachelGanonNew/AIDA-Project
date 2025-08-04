@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -15,8 +13,6 @@ services:
     volumes:
       - ./backend:/app
       - aida_data:/app/data
-    depends_on:
-      - frontend
     restart: unless-stopped
     networks:
       - aida-network
@@ -33,8 +29,6 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    depends_on:
-      - backend
     restart: unless-stopped
     networks:
       - aida-network
