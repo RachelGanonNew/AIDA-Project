@@ -1,6 +1,8 @@
-from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import Response
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
 from typing import List, Optional
@@ -54,6 +56,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add security headers middleware
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response: Response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=()"
+    return response
+
 # Initialize services
 ai_service = AIService()
 dao_service = DAOService()
@@ -68,7 +81,7 @@ async def root():
         "message": "Welcome to AIDA - AI-Driven DAO Analyst",
         "version": "1.0.0",
         "status": "operational",
-        "docs": "/docs"
+        "docs": "/docs",
     }
 
 @app.get("/health")
@@ -83,6 +96,7 @@ async def get_dao_health(dao_address: str):
     """
     try:
         health_data = await dao_service.analyze_dao_health(dao_address)
+        
         return health_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error analyzing DAO health: {str(e)}")
@@ -99,8 +113,14 @@ async def analyze_proposal(
         # Add to background tasks for async processing
         background_tasks.add_task(proposal_service.store_analysis, request)
         
-        analysis = await proposal_service.analyze_proposal(request)
-        return analysis
+        # Analyze proposal
+        analysis_result = await ai_service.analyze_proposal(request.dict())
+        
+        return ProposalAnalysisResponse(
+            proposal_id=request.proposal_id,
+            dao_address=request.dao_address,
+            **analysis_result
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error analyzing proposal: {str(e)}")
 

@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
+import WalletConnect from './WalletConnect';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,7 +26,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-900 text-white">
+      {/* Skip to content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only absolute top-2 left-2 z-50 bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Skip to main content
+      </a>
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
@@ -91,13 +99,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Main content */}
-      <div className="lg:pl-64">
-        {/* Top bar */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-slate-700 bg-slate-800 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
+      {/* Top bar */}
+      <header className="sticky top-0 z-40 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
+        <div className="flex items-center">
+            <button
+              type="button"
+              className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Bars3Icon className="h-6 w-6" />
@@ -110,21 +117,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </h2>
             </div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="h-2 w-2 rounded-full bg-green-400"></div>
-                <span className="text-sm text-gray-300">Connected</span>
-              </div>
+              <WalletConnect />
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Page content */}
-        <main className="py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* Main content */}
+      <main id="main-content" className="max-w-7xl mx-auto px-4 py-8" role="main" aria-label="Main content">
+        {children}
+      </main>
     </div>
   );
 };

@@ -11,6 +11,8 @@ import {
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
+import HealthCard from '../components/HealthCard';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface DashboardData {
   daoHealth: any;
@@ -19,12 +21,47 @@ interface DashboardData {
   governanceMetrics: any;
 }
 
-const Dashboard: React.FC = () => {
+const DEMO_DAO_HEALTH = {
+  overall_health_score: 0.82,
+  governance_score: 0.88,
+  financial_score: 0.76,
+  community_score: 0.79,
+};
+
+const DEMO_PROPOSALS = [
+  {
+    id: 'prop-001',
+    title: 'Update Treasury Allocation',
+    description: 'Rebalance the DAO treasury to optimize yield and reduce risk.',
+    status: 'Active',
+    prediction: 'Likely to Pass',
+    risk_level: 'Medium',
+    proposer: '0x123...abcd',
+  },
+  {
+    id: 'prop-002',
+    title: 'Add New Governance Module',
+    description: 'Implement a new voting mechanism to increase participation.',
+    status: 'Pending',
+    prediction: 'Uncertain',
+    risk_level: 'Low',
+    proposer: '0x456...efgh',
+  },
+];
+
+function Dashboard() {
+  const [demoMode, setDemoMode] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadDashboardData();
+    // Show onboarding modal on first load
+    if (window.localStorage.getItem('aida_onboarding_shown') !== 'true') {
+      setShowOnboarding(true);
+      window.localStorage.setItem('aida_onboarding_shown', 'true');
+    }
   }, []);
 
   const loadDashboardData = async () => {
@@ -65,16 +102,51 @@ const Dashboard: React.FC = () => {
     return 'Needs Attention';
   };
 
+  // Use demo data if demoMode is enabled
+  const daoHealth = demoMode ? DEMO_DAO_HEALTH : data?.daoHealth;
+  const proposals = demoMode ? DEMO_PROPOSALS : data?.recentProposals;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <LoadingSpinner size="lg" text="Loading dashboard data..." />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="relative">
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+            <h2 className="text-2xl font-bold mb-4">Welcome to AIDA Demo!</h2>
+            <p className="mb-4 text-gray-700 dark:text-gray-200">
+              This is a live demo of the AI-Driven DAO Analyst. Explore the dashboard, analyze proposals, and see AI-powered insights in action.
+            </p>
+            <button
+              className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={() => setShowOnboarding(false)}
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Demo Mode Toggle */}
+      <div className="flex justify-end mb-4">
+        <label className="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={demoMode}
+            onChange={() => setDemoMode((v) => !v)}
+            className="form-checkbox h-4 w-4 text-blue-600"
+          />
+          <span className="text-sm text-gray-600 dark:text-gray-300">Demo Mode</span>
+        </label>
+      </div>
+
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
@@ -94,44 +166,49 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Health Overview */}
-      {data?.daoHealth && (
+      {daoHealth && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700"
+          className="space-y-4"
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">DAO Health Overview</h2>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium ${getHealthColor(data.daoHealth.overall_health_score)} bg-opacity-20`}>
-              {getHealthStatus(data.daoHealth.overall_health_score)}
+            <div className={`px-3 py-1 rounded-full text-sm font-medium ${getHealthColor(daoHealth.overall_health_score)} bg-opacity-20`}>
+              {getHealthStatus(daoHealth.overall_health_score)}
             </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className={`text-2xl font-bold ${getHealthColor(data.daoHealth.overall_health_score)}`}>
-                {(data.daoHealth.overall_health_score * 100).toFixed(0)}%
-              </div>
-              <div className="text-sm text-gray-400">Overall Health</div>
-            </div>
-            <div className="text-center">
-              <div className={`text-2xl font-bold ${getHealthColor(data.daoHealth.governance_score)}`}>
-                {(data.daoHealth.governance_score * 100).toFixed(0)}%
-              </div>
-              <div className="text-sm text-gray-400">Governance</div>
-            </div>
-            <div className="text-center">
-              <div className={`text-2xl font-bold ${getHealthColor(data.daoHealth.financial_score)}`}>
-                {(data.daoHealth.financial_score * 100).toFixed(0)}%
-              </div>
-              <div className="text-sm text-gray-400">Financial</div>
-            </div>
-            <div className="text-center">
-              <div className={`text-2xl font-bold ${getHealthColor(data.daoHealth.community_score)}`}>
-                {(data.daoHealth.community_score * 100).toFixed(0)}%
-              </div>
-              <div className="text-sm text-gray-400">Community</div>
-            </div>
+            <HealthCard
+              title="Overall Health"
+              value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
+              subtitle={getHealthStatus(daoHealth.overall_health_score)}
+              icon={<ChartBarIcon className="h-6 w-6" />}
+              color="bg-blue-500/20 text-blue-400"
+              trend={{
+                direction: daoHealth.overall_health_score > 0.7 ? 'up' : 'stable',
+                value: '+5%'
+              }}
+            />
+            <HealthCard
+              title="Governance"
+              value={`${(daoHealth.governance_score * 100).toFixed(0)}%`}
+              icon={<DocumentTextIcon className="h-6 w-6" />}
+              color="bg-green-500/20 text-green-400"
+            />
+            <HealthCard
+              title="Financial"
+              value={`${(daoHealth.financial_score * 100).toFixed(0)}%`}
+              icon={<BanknotesIcon className="h-6 w-6" />}
+              color="bg-yellow-500/20 text-yellow-400"
+            />
+            <HealthCard
+              title="Community"
+              value={`${(daoHealth.community_score * 100).toFixed(0)}%`}
+              icon={<UsersIcon className="h-6 w-6" />}
+              color="bg-purple-500/20 text-purple-400"
+            />
           </div>
         </motion.div>
       )}
@@ -216,7 +293,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Risk Factors & Recommendations */}
-      {data?.daoHealth && (
+      {daoHealth && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -229,7 +306,7 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-white">Risk Factors</h3>
             </div>
             <div className="space-y-2">
-              {data.daoHealth.risk_factors?.slice(0, 3).map((risk: string, index: number) => (
+              {daoHealth.risk_factors?.slice(0, 3).map((risk: string, index: number) => (
                 <div key={index} className="flex items-start">
                   <div className="flex-shrink-0 w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3"></div>
                   <p className="text-sm text-gray-300">{risk}</p>
@@ -249,7 +326,7 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-white">AI Recommendations</h3>
             </div>
             <div className="space-y-2">
-              {data.daoHealth.recommendations?.slice(0, 3).map((rec: string, index: number) => (
+              {daoHealth.recommendations?.slice(0, 3).map((rec: string, index: number) => (
                 <div key={index} className="flex items-start">
                   <div className="flex-shrink-0 w-2 h-2 bg-green-400 rounded-full mt-2 mr-3"></div>
                   <p className="text-sm text-gray-300">{rec}</p>
@@ -285,6 +362,6 @@ const Dashboard: React.FC = () => {
       </motion.div>
     </div>
   );
-};
+}
 
 export default Dashboard; 
