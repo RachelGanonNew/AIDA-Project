@@ -5,7 +5,7 @@ import {
   ChartBarIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
-  TrendingUpIcon
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import toast from 'react-hot-toast';
@@ -115,7 +115,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <TrendingUpIcon className="h-8 w-8 text-purple-400" />
+                <ArrowTrendingUpIcon className="h-8 w-8 text-purple-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Liquidity</p>
                   <p className="text-2xl font-semibold text-white">
