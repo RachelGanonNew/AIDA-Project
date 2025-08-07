@@ -289,6 +289,7 @@ function Dashboard() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
                               <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
+
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Success Rate</p>
