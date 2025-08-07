@@ -7,7 +7,7 @@ import {
   CheckCircleIcon,
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
 
@@ -64,7 +64,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <BanknotesIcon className="h-8 w-8 text-blue-400" />
+                <BanknotesIcon className="h-5 w-5 text-blue-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Total Value</p>
                   <p className="text-2xl font-semibold text-white">
@@ -81,7 +81,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ChartBarIcon className="h-8 w-8 text-green-400" />
+                <ChartBarIcon className="h-5 w-5 text-green-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Diversification</p>
                   <p className="text-2xl font-semibold text-white">
@@ -98,7 +98,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ExclamationTriangleIcon className="h-8 w-8 text-yellow-400" />
+                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Risk Score</p>
                   <p className="text-2xl font-semibold text-white">
@@ -115,7 +115,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ArrowTrendingUpIcon className="h-8 w-8 text-purple-400" />
+                <ArrowTrendingUpIcon className="h-5 w-5 text-purple-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Liquidity</p>
                   <p className="text-2xl font-semibold text-white">

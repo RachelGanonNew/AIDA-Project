@@ -100,8 +100,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Top bar */}
-      <header className="sticky top-0 z-40 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
-        <div className="flex items-center">
+      <header className="sticky top-0 z-40 lg:pl-64 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
+        <div className="flex items-center px-4 py-3">
             <button
               type="button"
               className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
@@ -124,7 +124,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main content */}
-      <main id="main-content" className="max-w-7xl mx-auto px-4 py-8" role="main" aria-label="Main content">
+      <main id="main-content" className="lg:pl-64 max-w-7xl mx-auto px-4 py-8" role="main" aria-label="Main content">
         {children}
       </main>
     </div>

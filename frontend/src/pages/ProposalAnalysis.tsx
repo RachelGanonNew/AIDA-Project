@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   DocumentTextIcon, 
-  ChartBarIcon,
-  ExclamationTriangleIcon,
   CheckCircleIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
