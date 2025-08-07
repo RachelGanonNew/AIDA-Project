@@ -4,7 +4,7 @@ import {
   DocumentTextIcon, 
   BanknotesIcon, 
   UsersIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
@@ -109,7 +109,7 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <LoadingSpinner size="lg" text="Loading dashboard data..." />
+        <LoadingSpinner size={48} text="Loading dashboard data..." />
       </div>
     );
   }
@@ -280,7 +280,7 @@ function Dashboard() {
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <TrendingUpIcon className="h-8 w-8 text-yellow-400" />
+                              <ArrowTrendingUpIcon className="h-8 w-8 text-yellow-400" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Success Rate</p>

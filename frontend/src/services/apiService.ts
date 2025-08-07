@@ -168,4 +168,18 @@ export const getProposalPredictions = async (daoAddress: string, limit: number =
 export const getCrossChainAssets = async (daoAddress: string) => {
   const response = await apiEndpoints.crossChainAssets(daoAddress);
   return response.data;
-}; 
+};
+
+// Default export for backward compatibility
+const apiService = {
+  apiEndpoints,
+  getDAOHealth,
+  analyzeProposal,
+  getTreasuryAnalysis,
+  getGovernanceMetrics,
+  getProposalPredictions,
+  getCrossChainAssets,
+};
+
+export { apiService };
+export default apiService; 

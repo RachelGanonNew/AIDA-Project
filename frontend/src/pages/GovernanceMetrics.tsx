@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import { 
   UsersIcon, 
   ChartBarIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   ClockIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import toast from 'react-hot-toast';
@@ -113,7 +114,7 @@ const GovernanceMetrics: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <TrendingUpIcon className="h-8 w-8 text-yellow-400" />
+                <ArrowTrendingUpIcon className="h-8 w-8 text-yellow-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Success Rate</p>
                   <p className="text-2xl font-semibold text-white">
