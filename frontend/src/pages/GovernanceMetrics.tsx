@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   UsersIcon, 
+  ChartBarIcon,
   ArrowTrendingUpIcon,
   ClockIcon,
+  CheckCircleIcon,
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -113,6 +115,7 @@ const GovernanceMetrics: React.FC = () => {
             >
               <div className="flex items-center">
                 <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
+
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Success Rate</p>
                   <p className="text-2xl font-semibold text-white">

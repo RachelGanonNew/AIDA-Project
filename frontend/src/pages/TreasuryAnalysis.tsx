@@ -116,6 +116,7 @@ const TreasuryAnalysis: React.FC = () => {
             >
               <div className="flex items-center">
                 <ArrowTrendingUpIcon className="h-5 w-5 text-purple-400" />
+
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Liquidity</p>
                   <p className="text-2xl font-semibold text-white">
