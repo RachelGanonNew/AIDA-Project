@@ -118,8 +118,8 @@ function Dashboard() {
     <div className="space-y-6">
       {/* Page Header */}
       <div className="border-b border-slate-700 pb-4">
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400 mt-2">Overview of your DAO's health, governance, and treasury metrics</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-400 mt-2">Overview of your DAO's health, governance, and treasury metrics</p>
       </div>
 
       {/* Onboarding Modal */}
@@ -185,7 +185,7 @@ function Dashboard() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <HealthCard
               title="Overall Health"
               value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
@@ -222,7 +222,7 @@ function Dashboard() {
       {/* Key Metrics */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-white">Key Metrics</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -305,7 +305,7 @@ function Dashboard() {
       {daoHealth && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-white">Risk Assessment & Recommendations</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -357,7 +357,7 @@ function Dashboard() {
         className="bg-slate-800 rounded-lg p-6 border border-slate-700"
       >
         <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
             <DocumentTextIcon className="h-5 w-5 mr-2" />
             Analyze New Proposal

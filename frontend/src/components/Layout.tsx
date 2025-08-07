@@ -112,8 +112,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1 items-center">
-              <h2 className="text-lg font-semibold text-white">
-                AI-Driven DAO Analyst
+              <h2 className="text-base sm:text-lg font-semibold text-white truncate">
+                <span className="hidden sm:inline">AI-Driven DAO Analyst</span>
+                <span className="sm:hidden">AIDA</span>
               </h2>
             </div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
@@ -124,8 +125,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main content */}
-      <main id="main-content" className="lg:pl-64 max-w-7xl mx-auto px-4 py-8" role="main" aria-label="Main content">
-        {children}
+      <main id="main-content" className="lg:pl-64 w-full px-4 sm:px-6 py-4 sm:py-8" role="main" aria-label="Main content">
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );

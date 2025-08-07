@@ -94,4 +94,19 @@ code {
 
 .status-info {
   @apply bg-blue-500/20 text-blue-400 border-blue-500/30;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .card-mobile {
+    @apply p-4;
+  }
+  
+  .text-mobile {
+    @apply text-sm;
+  }
+  
+  .gap-mobile {
+    @apply gap-3;
+  }
 } 

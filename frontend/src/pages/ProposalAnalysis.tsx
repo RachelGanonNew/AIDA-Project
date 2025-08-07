@@ -73,7 +73,7 @@ const ProposalAnalysis: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Input Form */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -238,7 +238,7 @@ const ProposalAnalysis: React.FC = () => {
         className="bg-slate-800 rounded-lg p-6 border border-slate-700"
       >
         <h2 className="text-lg font-semibold text-white mb-4">Sample Proposals</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div className="p-4 bg-slate-700 rounded-lg">
             <h4 className="font-medium text-white mb-2">Treasury Diversification</h4>
             <p className="text-sm text-gray-400 mb-3">
