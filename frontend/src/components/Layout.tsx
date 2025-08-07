@@ -125,7 +125,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main content */}
-      <main id="main-content" className="lg:pl-64 w-full px-4 sm:px-6 py-4 sm:py-8" role="main" aria-label="Main content">
+      <main id="main-content" className="md:pl-64 w-full px-3 xs:px-4 sm:px-6 py-3 xs:py-4 sm:py-6 md:py-8" role="main" aria-label="Main content">
         <div className="max-w-7xl mx-auto">
           {children}
         </div>

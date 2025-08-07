@@ -172,4 +172,26 @@ code {
 /* Ensure content doesn't get too wide on large screens */
 .content-container {
   @apply w-full max-w-screen-2xl mx-auto;
+}
+
+/* Enhanced mobile touch targets */
+@media (max-width: 640px) {
+  button {
+    min-height: 44px; /* Apple's recommended touch target size */
+  }
+  
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
+
+/* Improved text readability on small screens */
+@media (max-width: 475px) {
+  .metric-value {
+    @apply text-xl;
+  }
+  
+  .metric-label {
+    @apply text-xs;
+  }
 } 
