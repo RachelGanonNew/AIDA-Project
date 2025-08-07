@@ -185,7 +185,7 @@ function Dashboard() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5">
             <HealthCard
               title="Overall Health"
               value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
@@ -222,12 +222,12 @@ function Dashboard() {
       {/* Key Metrics */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-white">Key Metrics</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -246,7 +246,7 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -265,7 +265,7 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -284,7 +284,7 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -357,7 +357,7 @@ function Dashboard() {
         className="bg-slate-800 rounded-lg p-6 border border-slate-700"
       >
         <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 xs:gap-3 sm:gap-4">
           <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
             <DocumentTextIcon className="h-5 w-5 mr-2" />
             Analyze New Proposal

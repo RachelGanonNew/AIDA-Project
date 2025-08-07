@@ -67,8 +67,8 @@ const ProposalAnalysis: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Proposal Analysis</h1>
-        <p className="mt-2 text-sm text-gray-400">
+        <h1 className="heading-responsive font-bold text-white">Proposal Analysis</h1>
+        <p className="mt-2 text-responsive text-gray-400">
           AI-powered analysis of governance proposals with predictions and recommendations
         </p>
       </div>
