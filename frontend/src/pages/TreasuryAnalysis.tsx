@@ -47,8 +47,8 @@ const TreasuryAnalysis: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="heading-responsive font-bold text-white">Treasury Analysis</h1>
-        <p className="mt-2 text-responsive text-gray-400">
+        <h1 className="text-2xl font-bold text-white">Treasury Analysis</h1>
+        <p className="mt-2 text-sm text-gray-400">
           AI-powered treasury health analysis and optimization recommendations
         </p>
       </div>
@@ -56,7 +56,7 @@ const TreasuryAnalysis: React.FC = () => {
       {treasuryData && (
         <>
           {/* Overview Cards */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -158,7 +158,7 @@ const TreasuryAnalysis: React.FC = () => {
           </motion.div>
 
           {/* Risk Factors & Recommendations */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}

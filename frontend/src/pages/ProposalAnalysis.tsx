@@ -67,13 +67,13 @@ const ProposalAnalysis: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="heading-responsive font-bold text-white">Proposal Analysis</h1>
-        <p className="mt-2 text-responsive text-gray-400">
+        <h1 className="text-2xl font-bold text-white">Proposal Analysis</h1>
+        <p className="mt-2 text-sm text-gray-400">
           AI-powered analysis of governance proposals with predictions and recommendations
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Input Form */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -238,7 +238,7 @@ const ProposalAnalysis: React.FC = () => {
         className="bg-slate-800 rounded-lg p-6 border border-slate-700"
       >
         <h2 className="text-lg font-semibold text-white mb-4">Sample Proposals</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 bg-slate-700 rounded-lg">
             <h4 className="font-medium text-white mb-2">Treasury Diversification</h4>
             <p className="text-sm text-gray-400 mb-3">

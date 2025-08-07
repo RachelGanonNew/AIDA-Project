@@ -44,8 +44,8 @@ const GovernanceMetrics: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="heading-responsive font-bold text-white">Governance Metrics</h1>
-        <p className="mt-2 text-responsive text-gray-400">
+        <h1 className="text-2xl font-bold text-white">Governance Metrics</h1>
+        <p className="mt-2 text-sm text-gray-400">
           Comprehensive governance analytics and AI-powered predictions
         </p>
       </div>
@@ -53,7 +53,7 @@ const GovernanceMetrics: React.FC = () => {
       {metrics && (
         <>
           {/* Key Metrics */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -131,7 +131,7 @@ const GovernanceMetrics: React.FC = () => {
             className="bg-slate-800 rounded-lg p-6 border border-slate-700"
           >
             <h2 className="text-lg font-semibold text-white mb-4">Governance Trends</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {Object.entries(metrics.governance_trends).map(([key, value]: [string, any]) => (
                 <div key={key} className="p-4 bg-slate-700 rounded-lg">
                   <h4 className="font-medium text-white mb-2 capitalize">
@@ -187,7 +187,7 @@ const GovernanceMetrics: React.FC = () => {
             className="bg-slate-800 rounded-lg p-6 border border-slate-700"
           >
             <h2 className="text-lg font-semibold text-white mb-4">AI Predictions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-md font-medium text-white mb-3">Next Month Forecast</h3>
                 <div className="space-y-3">
