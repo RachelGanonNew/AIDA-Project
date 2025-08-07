@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         Skip to main content
       </a>
       {/* Mobile sidebar */}
-      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-50 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-slate-800">
           <div className="flex h-16 items-center justify-between px-4">
@@ -71,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+      <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex flex-col flex-grow bg-slate-800 pt-5 pb-4 overflow-y-auto">
           <div className="flex items-center flex-shrink-0 px-4">
             <h1 className="text-2xl font-bold text-white">AIDA</h1>
@@ -100,11 +100,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Top bar */}
-      <header className="sticky top-0 z-40 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
-        <div className="flex items-center">
+      <header className="sticky top-0 z-40 md:pl-64 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
+        <div className="flex items-center px-4 py-3">
             <button
               type="button"
-              className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
+              className="-m-2.5 p-2.5 text-gray-400 md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Bars3Icon className="h-6 w-6" />
@@ -112,8 +112,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1 items-center">
-              <h2 className="text-lg font-semibold text-white">
-                AI-Driven DAO Analyst
+              <h2 className="text-base sm:text-lg font-semibold text-white truncate">
+                <span className="hidden sm:inline">AI-Driven DAO Analyst</span>
+                <span className="sm:hidden">AIDA</span>
               </h2>
             </div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
@@ -124,8 +125,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* Main content */}
-      <main id="main-content" className="max-w-7xl mx-auto px-4 py-8" role="main" aria-label="Main content">
-        {children}
+      <main id="main-content" className="md:pl-64 w-full px-3 xs:px-4 sm:px-6 py-3 xs:py-4 sm:py-6 md:py-8" role="main" aria-label="Main content">
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );

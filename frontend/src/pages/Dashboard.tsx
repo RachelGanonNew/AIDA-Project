@@ -28,26 +28,26 @@ const DEMO_DAO_HEALTH = {
   community_score: 0.79,
 };
 
-const DEMO_PROPOSALS = [
-  {
-    id: 'prop-001',
-    title: 'Update Treasury Allocation',
-    description: 'Rebalance the DAO treasury to optimize yield and reduce risk.',
-    status: 'Active',
-    prediction: 'Likely to Pass',
-    risk_level: 'Medium',
-    proposer: '0x123...abcd',
-  },
-  {
-    id: 'prop-002',
-    title: 'Add New Governance Module',
-    description: 'Implement a new voting mechanism to increase participation.',
-    status: 'Pending',
-    prediction: 'Uncertain',
-    risk_level: 'Low',
-    proposer: '0x456...efgh',
-  },
-];
+// const DEMO_PROPOSALS = [
+//   {
+//     id: 'prop-001',
+//     title: 'Update Treasury Allocation',
+//     description: 'Rebalance the DAO treasury to optimize yield and reduce risk.',
+//     status: 'Active',
+//     prediction: 'Likely to Pass',
+//     risk_level: 'Medium',
+//     proposer: '0x123...abcd',
+//   },
+//   {
+//     id: 'prop-002',
+//     title: 'Add New Governance Module',
+//     description: 'Implement a new voting mechanism to increase participation.',
+//     status: 'Pending',
+//     prediction: 'Uncertain',
+//     risk_level: 'Low',
+//     proposer: '0x456...efgh',
+//   },
+// ];
 
 function Dashboard() {
   const [demoMode, setDemoMode] = useState(true);
@@ -104,7 +104,7 @@ function Dashboard() {
 
   // Use demo data if demoMode is enabled
   const daoHealth = demoMode ? DEMO_DAO_HEALTH : data?.daoHealth;
-  const proposals = demoMode ? DEMO_PROPOSALS : data?.recentProposals;
+      // const proposals = demoMode ? [] : data?.recentProposals;
 
   if (loading) {
     return (
@@ -115,17 +115,23 @@ function Dashboard() {
   }
 
   return (
-    <div className="relative">
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="border-b border-slate-700 pb-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-400 mt-2">Overview of your DAO's health, governance, and treasury metrics</p>
+      </div>
+
       {/* Onboarding Modal */}
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-            <h2 className="text-2xl font-bold mb-4">Welcome to AIDA Demo!</h2>
-            <p className="mb-4 text-gray-700 dark:text-gray-200">
+          <div className="bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center border border-slate-700">
+            <h2 className="text-2xl font-bold mb-4 text-white">Welcome to AIDA!</h2>
+            <p className="mb-4 text-gray-300">
               This is a live demo of the AI-Driven DAO Analyst. Explore the dashboard, analyze proposals, and see AI-powered insights in action.
             </p>
             <button
-              className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               onClick={() => setShowOnboarding(false)}
             >
               Get Started
@@ -135,8 +141,8 @@ function Dashboard() {
       )}
 
       {/* Demo Mode Toggle */}
-      <div className="flex justify-end mb-4">
-        <label className="flex items-center space-x-2 cursor-pointer">
+      <div className="flex justify-end">
+        <label className="flex items-center space-x-2 cursor-pointer bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
           <input
             type="checkbox"
             checked={demoMode}
@@ -179,7 +185,7 @@ function Dashboard() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5">
             <HealthCard
               title="Overall Health"
               value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
@@ -214,16 +220,18 @@ function Dashboard() {
       )}
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-white">Key Metrics</h2>
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <BanknotesIcon className="h-8 w-8 text-blue-400" />
+                              <BanknotesIcon className="h-5 w-5 text-blue-400" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Treasury Value</p>
@@ -238,11 +246,11 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <DocumentTextIcon className="h-8 w-8 text-green-400" />
+                              <DocumentTextIcon className="h-5 w-5 text-green-400" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Active Proposals</p>
@@ -257,11 +265,11 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <UsersIcon className="h-8 w-8 text-purple-400" />
+                              <UsersIcon className="h-5 w-5 text-purple-400" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Voter Participation</p>
@@ -276,11 +284,12 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 card-hover"
+          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
-                              <ArrowTrendingUpIcon className="h-8 w-8 text-yellow-400" />
+                              <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
+
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-400">Success Rate</p>
@@ -290,11 +299,14 @@ function Dashboard() {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
 
       {/* Risk Factors & Recommendations */}
       {daoHealth && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">Risk Assessment & Recommendations</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -334,6 +346,7 @@ function Dashboard() {
               ))}
             </div>
           </motion.div>
+          </div>
         </div>
       )}
 
@@ -345,7 +358,7 @@ function Dashboard() {
         className="bg-slate-800 rounded-lg p-6 border border-slate-700"
       >
         <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 xs:gap-3 sm:gap-4">
           <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
             <DocumentTextIcon className="h-5 w-5 mr-2" />
             Analyze New Proposal

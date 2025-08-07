@@ -8,7 +8,7 @@ import {
   CheckCircleIcon,
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
 
@@ -46,8 +46,8 @@ const GovernanceMetrics: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Governance Metrics</h1>
-        <p className="mt-2 text-sm text-gray-400">
+        <h1 className="heading-responsive font-bold text-white">Governance Metrics</h1>
+        <p className="mt-2 text-responsive text-gray-400">
           Comprehensive governance analytics and AI-powered predictions
         </p>
       </div>
@@ -55,7 +55,7 @@ const GovernanceMetrics: React.FC = () => {
       {metrics && (
         <>
           {/* Key Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -63,7 +63,7 @@ const GovernanceMetrics: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <DocumentTextIcon className="h-8 w-8 text-blue-400" />
+                <DocumentTextIcon className="h-5 w-5 text-blue-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Total Proposals</p>
                   <p className="text-2xl font-semibold text-white">
@@ -80,7 +80,7 @@ const GovernanceMetrics: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ClockIcon className="h-8 w-8 text-green-400" />
+                <ClockIcon className="h-5 w-5 text-green-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Active Proposals</p>
                   <p className="text-2xl font-semibold text-white">
@@ -97,7 +97,7 @@ const GovernanceMetrics: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <UsersIcon className="h-8 w-8 text-purple-400" />
+                <UsersIcon className="h-5 w-5 text-purple-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Voter Participation</p>
                   <p className="text-2xl font-semibold text-white">
@@ -114,7 +114,8 @@ const GovernanceMetrics: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ArrowTrendingUpIcon className="h-8 w-8 text-yellow-400" />
+                <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
+
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Success Rate</p>
                   <p className="text-2xl font-semibold text-white">
@@ -133,7 +134,7 @@ const GovernanceMetrics: React.FC = () => {
             className="bg-slate-800 rounded-lg p-6 border border-slate-700"
           >
             <h2 className="text-lg font-semibold text-white mb-4">Governance Trends</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {Object.entries(metrics.governance_trends).map(([key, value]: [string, any]) => (
                 <div key={key} className="p-4 bg-slate-700 rounded-lg">
                   <h4 className="font-medium text-white mb-2 capitalize">
@@ -189,7 +190,7 @@ const GovernanceMetrics: React.FC = () => {
             className="bg-slate-800 rounded-lg p-6 border border-slate-700"
           >
             <h2 className="text-lg font-semibold text-white mb-4">AI Predictions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <h3 className="text-md font-medium text-white mb-3">Next Month Forecast</h3>
                 <div className="space-y-3">

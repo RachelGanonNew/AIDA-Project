@@ -7,7 +7,7 @@ import {
   CheckCircleIcon,
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
 
@@ -47,8 +47,8 @@ const TreasuryAnalysis: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Treasury Analysis</h1>
-        <p className="mt-2 text-sm text-gray-400">
+        <h1 className="heading-responsive font-bold text-white">Treasury Analysis</h1>
+        <p className="mt-2 text-responsive text-gray-400">
           AI-powered treasury health analysis and optimization recommendations
         </p>
       </div>
@@ -56,7 +56,7 @@ const TreasuryAnalysis: React.FC = () => {
       {treasuryData && (
         <>
           {/* Overview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <BanknotesIcon className="h-8 w-8 text-blue-400" />
+                <BanknotesIcon className="h-5 w-5 text-blue-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Total Value</p>
                   <p className="text-2xl font-semibold text-white">
@@ -81,7 +81,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ChartBarIcon className="h-8 w-8 text-green-400" />
+                <ChartBarIcon className="h-5 w-5 text-green-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Diversification</p>
                   <p className="text-2xl font-semibold text-white">
@@ -98,7 +98,7 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ExclamationTriangleIcon className="h-8 w-8 text-yellow-400" />
+                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Risk Score</p>
                   <p className="text-2xl font-semibold text-white">
@@ -115,7 +115,8 @@ const TreasuryAnalysis: React.FC = () => {
               className="bg-slate-800 rounded-lg p-6 border border-slate-700"
             >
               <div className="flex items-center">
-                <ArrowTrendingUpIcon className="h-8 w-8 text-purple-400" />
+                <ArrowTrendingUpIcon className="h-5 w-5 text-purple-400" />
+
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-400">Liquidity</p>
                   <p className="text-2xl font-semibold text-white">
@@ -158,7 +159,7 @@ const TreasuryAnalysis: React.FC = () => {
           </motion.div>
 
           {/* Risk Factors & Recommendations */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
