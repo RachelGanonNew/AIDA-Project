@@ -11,6 +11,7 @@ import {
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
+import './GovernanceMetrics.css';
 
 const GovernanceMetrics: React.FC = () => {
   const [metrics, setMetrics] = useState<any>(null);

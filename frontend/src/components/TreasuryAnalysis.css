@@ -1,0 +1,147 @@
+/* Treasury Analysis Component Styles */
+.treasury-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.page-description {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .overview-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .overview-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.treasury-card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.treasury-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+}
+
+.card-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.card-icon.blue { color: #3b82f6; }
+.card-icon.green { color: #10b981; }
+.card-icon.yellow { color: #f59e0b; }
+.card-icon.purple { color: #8b5cf6; }
+
+.card-info {
+  flex: 1;
+}
+
+.card-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+}
+
+.analysis-section {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .two-column {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.chart-container {
+  height: 300px;
+  width: 100%;
+}
+
+.recommendations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recommendation-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.recommendation-text {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}

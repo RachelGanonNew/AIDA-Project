@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
+import './ProposalAnalysis.css';
 
 const ProposalAnalysis: React.FC = () => {
   const [proposalData, setProposalData] = useState({

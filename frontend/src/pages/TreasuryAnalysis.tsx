@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
+import './TreasuryAnalysis.css';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
@@ -44,11 +45,11 @@ const TreasuryAnalysis: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="treasury-container">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white">Treasury Analysis</h1>
-        <p className="mt-2 text-sm text-gray-400">
+      <div className="page-header">
+        <h1 className="page-title">Treasury Analysis</h1>
+        <p className="page-description">
           AI-powered treasury health analysis and optimization recommendations
         </p>
       </div>
@@ -56,18 +57,18 @@ const TreasuryAnalysis: React.FC = () => {
       {treasuryData && (
         <>
           {/* Overview Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="overview-cards">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
+              className="treasury-card"
             >
-              <div className="flex items-center">
-                <BanknotesIcon className="h-5 w-5 text-blue-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Total Value</p>
-                  <p className="text-2xl font-semibold text-white">
+              <div className="card-content">
+                <BanknotesIcon className="card-icon blue" />
+                <div className="card-info">
+                  <p className="card-label">Total Value</p>
+                  <p className="card-value">
                     ${treasuryData.total_value_usd?.toLocaleString()}
                   </p>
                 </div>
@@ -78,13 +79,13 @@ const TreasuryAnalysis: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
+              className="treasury-card"
             >
-              <div className="flex items-center">
-                <ChartBarIcon className="h-5 w-5 text-green-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Diversification</p>
-                  <p className="text-2xl font-semibold text-white">
+              <div className="card-content">
+                <ChartBarIcon className="card-icon green" />
+                <div className="card-info">
+                  <p className="card-label">Diversification</p>
+                  <p className="card-value">
                     {(treasuryData.asset_diversification_score * 100).toFixed(0)}%
                   </p>
                 </div>
