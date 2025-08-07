@@ -8,6 +8,7 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import './Dashboard.css';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
@@ -115,11 +116,11 @@ function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="dashboard-container">
       {/* Page Header */}
-      <div className="border-b border-slate-700 pb-4">
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400 mt-2">Overview of your DAO's health, governance, and treasury metrics</p>
+      <div className="page-header">
+        <h1 className="page-title">Dashboard</h1>
+        <p className="page-description">Overview of your DAO's health, governance, and treasury metrics</p>
       </div>
 
       {/* Onboarding Modal */}
@@ -220,22 +221,20 @@ function Dashboard() {
       )}
 
       {/* Key Metrics */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white">Key Metrics</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div>
+        <h2 className="section-title">Key Metrics</h2>
+        <div className="metrics-grid">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
+          className="metric-card"
         >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <BanknotesIcon className="h-5 w-5 text-blue-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Treasury Value</p>
-              <p className="text-2xl font-semibold text-white">
+          <div className="metric-content">
+            <BanknotesIcon className="metric-icon blue" />
+            <div className="metric-info">
+              <p className="metric-label">Treasury Value</p>
+              <p className="metric-value">
                 ${data?.treasuryOverview?.total_value_usd?.toLocaleString() || '0'}
               </p>
             </div>
@@ -246,15 +245,13 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
+          className="metric-card"
         >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <DocumentTextIcon className="h-5 w-5 text-green-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Active Proposals</p>
-              <p className="text-2xl font-semibold text-white">
+          <div className="metric-content">
+            <DocumentTextIcon className="metric-icon green" />
+            <div className="metric-info">
+              <p className="metric-label">Active Proposals</p>
+              <p className="metric-value">
                 {data?.governanceMetrics?.active_proposals || 0}
               </p>
             </div>
@@ -265,15 +262,13 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
+          className="metric-card"
         >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <UsersIcon className="h-5 w-5 text-purple-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Voter Participation</p>
-              <p className="text-2xl font-semibold text-white">
+          <div className="metric-content">
+            <UsersIcon className="metric-icon purple" />
+            <div className="metric-info">
+              <p className="metric-label">Voter Participation</p>
+              <p className="metric-value">
                 {((data?.governanceMetrics?.average_voter_participation || 0) * 100).toFixed(0)}%
               </p>
             </div>
@@ -284,16 +279,13 @@ function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
+          className="metric-card"
         >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
-
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Success Rate</p>
-              <p className="text-2xl font-semibold text-white">
+          <div className="metric-content">
+            <ArrowTrendingUpIcon className="metric-icon yellow" />
+            <div className="metric-info">
+              <p className="metric-label">Success Rate</p>
+              <p className="metric-value">
                 {((data?.governanceMetrics?.proposal_success_rate || 0) * 100).toFixed(0)}%
               </p>
             </div>
