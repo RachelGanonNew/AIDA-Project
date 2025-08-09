@@ -1,6 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { DocumentTextIcon, ClockIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { Card, CardContent, Box, Typography, Chip, useTheme } from '@mui/material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 interface ProposalCardProps {
   proposal: {
@@ -18,94 +21,98 @@ interface ProposalCardProps {
 }
 
 const ProposalCard: React.FC<ProposalCardProps> = ({ proposal, onClick }) => {
+  const theme = useTheme();
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'text-blue-400';
-      case 'passed': return 'text-green-400';
-      case 'failed': return 'text-red-400';
-      case 'executed': return 'text-purple-400';
-      default: return 'text-gray-400';
+      case 'active': return 'primary';
+      case 'passed': return 'success';
+      case 'failed': return 'error';
+      case 'executed': return 'secondary';
+      default: return 'default';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'active': return <ClockIcon className="h-5 w-5" />;
-      case 'passed': return <CheckCircleIcon className="h-5 w-5" />;
-      case 'failed': return <XCircleIcon className="h-5 w-5" />;
-      case 'executed': return <CheckCircleIcon className="h-5 w-5" />;
-      default: return <DocumentTextIcon className="h-5 w-5" />;
+      case 'active': return <AccessTimeIcon color="primary" fontSize="small" />;
+      case 'passed': return <CheckCircleIcon color="success" fontSize="small" />;
+      case 'failed': return <CancelIcon color="error" fontSize="small" />;
+      case 'executed': return <CheckCircleIcon color="secondary" fontSize="small" />;
+      default: return <DescriptionIcon color="action" fontSize="small" />;
     }
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'low': return 'text-green-400';
-      case 'medium': return 'text-yellow-400';
-      case 'high': return 'text-red-400';
-      default: return 'text-gray-400';
+      case 'low': return 'success';
+      case 'medium': return 'warning';
+      case 'high': return 'error';
+      default: return 'default';
     }
   };
 
   const getPredictionColor = (prediction: number) => {
-    if (prediction >= 0.7) return 'text-green-400';
-    if (prediction >= 0.5) return 'text-yellow-400';
-    return 'text-red-400';
+    if (prediction >= 0.7) return 'success';
+    if (prediction >= 0.5) return 'warning';
+    return 'error';
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`bg-slate-800 rounded-lg p-6 border border-slate-700 ${onClick ? 'cursor-pointer hover:bg-slate-750 transition-colors' : ''}`}
+    <Card
+      variant="outlined"
+      className={`proposalcard-root${onClick ? ' proposalcard-clickable' : ''}`}
       onClick={onClick}
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center">
-          <DocumentTextIcon className="h-6 w-6 text-blue-400 mr-3" />
-          <div>
-            <h3 className="text-lg font-semibold text-white">{proposal.title}</h3>
-            <p className="text-sm text-gray-400">Proposed by {proposal.proposer.slice(0, 8)}...{proposal.proposer.slice(-6)}</p>
-          </div>
-        </div>
-        <div className={`flex items-center ${getStatusColor(proposal.status)}`}>
-          {getStatusIcon(proposal.status)}
-          <span className="ml-2 text-sm font-medium capitalize">{proposal.status}</span>
-        </div>
-      </div>
+      <CardContent>
+        <Box display="flex" alignItems="flex-start" justifyContent="space-between" mb={2}>
+          <Box display="flex" alignItems="center">
+            <DescriptionIcon color="primary" sx={{ mr: 1 }} />
+            <Box>
+              <Typography variant="subtitle1" fontWeight={700}>{proposal.title}</Typography>
+              <Typography variant="caption" color="text.secondary">
+                Proposed by {proposal.proposer.slice(0, 8)}...{proposal.proposer.slice(-6)}
+              </Typography>
+            </Box>
+          </Box>
+          <Chip
+            icon={getStatusIcon(proposal.status)}
+            label={proposal.status}
+            color={getStatusColor(proposal.status) as any}
+            size="small"
+            className="proposalcard-status"
+          />
+        </Box>
 
-      <p className="text-gray-300 text-sm mb-4 line-clamp-3">
-        {proposal.description}
-      </p>
+        <Typography variant="body2" color="text.secondary" mb={2} className="proposalcard-desc">
+          {proposal.description}
+        </Typography>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          {proposal.prediction !== undefined && (
-            <div className="flex items-center">
-              <span className="text-sm text-gray-400 mr-2">Prediction:</span>
-              <span className={`text-sm font-medium ${getPredictionColor(proposal.prediction)}`}>
-                {(proposal.prediction * 100).toFixed(0)}%
-              </span>
-            </div>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
+          <Box display="flex" alignItems="center" gap={2}>
+            {proposal.prediction !== undefined && (
+              <Chip
+                label={`Prediction: ${(proposal.prediction * 100).toFixed(0)}%`}
+                color={getPredictionColor(proposal.prediction) as any}
+                size="small"
+              />
+            )}
+            {proposal.risk_level && (
+              <Chip
+                label={`Risk: ${proposal.risk_level.toUpperCase()}`}
+                color={getRiskColor(proposal.risk_level) as any}
+                size="small"
+              />
+            )}
+          </Box>
+          {proposal.voting_end && (
+            <Typography variant="caption" color="text.secondary">
+              Ends: {new Date(proposal.voting_end).toLocaleDateString()}
+            </Typography>
           )}
-          {proposal.risk_level && (
-            <div className="flex items-center">
-              <span className="text-sm text-gray-400 mr-2">Risk:</span>
-              <span className={`text-sm font-medium ${getRiskColor(proposal.risk_level)}`}>
-                {proposal.risk_level.toUpperCase()}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {proposal.voting_end && (
-          <div className="text-sm text-gray-400">
-            Ends: {new Date(proposal.voting_end).toLocaleDateString()}
-          </div>
-        )}
-      </div>
-    </motion.div>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 
-export default ProposalCard; 
+export default ProposalCard;

@@ -1,12 +1,12 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Card, CardContent, Box, Typography } from '@mui/material';
 
 interface HealthCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
   icon: React.ReactNode;
-  color: string;
+  color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
   trend?: {
     direction: 'up' | 'down' | 'stable';
     value: string;
@@ -23,13 +23,6 @@ const HealthCard: React.FC<HealthCardProps> = ({
   trend,
   onClick
 }) => {
-  const getTrendColor = (direction: string) => {
-    switch (direction) {
-      case 'up': return 'text-green-400';
-      case 'down': return 'text-red-400';
-      default: return 'text-gray-400';
-    }
-  };
 
   const getTrendIcon = (direction: string) => {
     switch (direction) {
@@ -40,35 +33,32 @@ const HealthCard: React.FC<HealthCardProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`bg-slate-800 rounded-lg p-6 border border-slate-700 ${onClick ? 'cursor-pointer hover:bg-slate-750 transition-colors' : ''}`}
+    <Card
+      variant="outlined"
+  className={`healthcard-root${onClick ? ' healthcard-clickable' : ''}`}
       onClick={onClick}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <div className={`p-2 rounded-lg ${color}`}>
-            {icon}
-          </div>
-          <div className="ml-4">
-            <p className="text-sm font-medium text-gray-400">{title}</p>
-            <p className="text-2xl font-semibold text-white">{value}</p>
+  <CardContent className="healthcard-content">
+        <Box className="healthcard-main">
+          <Box className={`healthcard-icon healthcard-icon-${color}`}>{icon}</Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">{title}</Typography>
+            <Typography variant="h6" fontWeight={700}>{value}</Typography>
             {subtitle && (
-              <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+              <Typography variant="caption" color="text.secondary">{subtitle}</Typography>
             )}
-          </div>
-        </div>
+          </Box>
+        </Box>
         {trend && (
-          <div className={`text-right ${getTrendColor(trend.direction)}`}>
-            <div className="text-sm font-medium">
+          <Box className={`healthcard-trend healthcard-trend-${trend.direction}`}> 
+            <Typography variant="body2" fontWeight={600}>
               {getTrendIcon(trend.direction)} {trend.value}
-            </div>
-          </div>
+            </Typography>
+          </Box>
         )}
-      </div>
-    </motion.div>
+      </CardContent>
+    </Card>
   );
 };
 
-export default HealthCard; 
+export default HealthCard;

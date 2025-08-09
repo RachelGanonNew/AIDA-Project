@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { Box, Typography, Paper } from '@mui/material';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -27,13 +29,15 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white">
-          <h1 className="text-3xl font-bold mb-4">Something went wrong.</h1>
-          <p className="mb-2">An unexpected error occurred. Please refresh the page or try again later.</p>
-          <pre className="bg-slate-800 rounded p-4 text-sm text-red-400 max-w-xl overflow-x-auto">
-            {this.state.error?.message}
-          </pre>
-        </div>
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" bgcolor="background.default" color="text.primary">
+          <Typography variant="h5" fontWeight={700} mb={2}>Something went wrong.</Typography>
+          <Typography variant="body1" mb={2}>An unexpected error occurred. Please refresh the page or try again later.</Typography>
+    <Box component={Paper} elevation={2} className="errorboundary-box">
+            <Typography variant="body2" fontFamily="monospace">
+              {this.state.error?.message}
+            </Typography>
+          </Box>
+        </Box>
       );
     }
     return this.props.children;

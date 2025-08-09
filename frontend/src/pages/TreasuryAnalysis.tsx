@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  BanknotesIcon, 
-  ChartBarIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  ArrowTrendingUpIcon
-} from '@heroicons/react/24/outline';
+import Grid from '@mui/material/Grid';
+import { Box, Typography, Paper, Chip, CircularProgress } from '@mui/material';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
@@ -37,105 +36,70 @@ const TreasuryAnalysis: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
+      <Box display="flex" alignItems="center" justifyContent="center" minHeight={300}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="heading-responsive font-bold text-white">Treasury Analysis</h1>
-        <p className="mt-2 text-responsive text-gray-400">
+  <div className="layout-main-inner treasury-root">
+
+      <Box>
+        <Typography variant="h4" fontWeight={700}>Treasury Analysis</Typography>
+        <Typography color="text.secondary" mt={1}>
           AI-powered treasury health analysis and optimization recommendations
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {treasuryData && (
         <>
-          {/* Overview Cards */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <BanknotesIcon className="h-5 w-5 text-blue-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Total Value</p>
-                  <p className="text-2xl font-semibold text-white">
-                    ${treasuryData.total_value_usd?.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <ChartBarIcon className="h-5 w-5 text-green-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Diversification</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {(treasuryData.asset_diversification_score * 100).toFixed(0)}%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+          <Paper elevation={2} sx={{ px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 3 }, pb: { xs: 4, sm: 6 }, mb: { xs: 2, sm: 3, md: 4 }, borderRadius: 2, boxShadow: 1 }}>
+            <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <AccountBalanceIcon color="primary" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Total Value</Typography>
+                  <Typography variant="h6">${treasuryData.total_value_usd?.toLocaleString()}</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <BarChartIcon color="success" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Diversification</Typography>
+                  <Typography variant="h6">{(treasuryData.asset_diversification_score * 100).toFixed(0)}%</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <WarningAmberIcon color="warning" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Risk Score</Typography>
+                  <Typography variant="h6">{(treasuryData.risk_score * 100).toFixed(0)}%</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <TrendingUpIcon color="secondary" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Liquidity</Typography>
+                  <Typography variant="h6">{(treasuryData.liquidity_score * 100).toFixed(0)}%</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            </Grid>
+          </Paper>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Risk Score</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {(treasuryData.risk_score * 100).toFixed(0)}%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <ArrowTrendingUpIcon className="h-5 w-5 text-purple-400" />
-
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Liquidity</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {(treasuryData.liquidity_score * 100).toFixed(0)}%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Asset Allocation Chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">Asset Allocation</h2>
-            <div className="h-64">
+          <Paper elevation={2} className="treasury-section" sx={{ mt: { xs: 6, sm: 8 }, px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 3 }, borderRadius: 2 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>Asset Allocation</Typography>
+            <Box height={256}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -155,85 +119,69 @@ const TreasuryAnalysis: React.FC = () => {
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
-            </div>
-          </motion.div>
+            </Box>
+          </Paper>
 
-          {/* Risk Factors & Recommendations */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center mb-4">
-                <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400 mr-2" />
-                <h3 className="text-lg font-semibold text-white">Risk Factors</h3>
-              </div>
-              <div className="space-y-2">
-                {treasuryData.risk_factors?.map((risk: string, index: number) => (
-                  <div key={index} className="flex items-start">
-                    <div className="flex-shrink-0 w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3"></div>
-                    <p className="text-sm text-gray-300">{risk}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center mb-4">
-                <CheckCircleIcon className="h-5 w-5 text-green-400 mr-2" />
-                <h3 className="text-lg font-semibold text-white">AI Recommendations</h3>
-              </div>
-              <div className="space-y-2">
-                {treasuryData.recommendations?.map((rec: string, index: number) => (
-                  <div key={index} className="flex items-start">
-                    <CheckCircleIcon className="h-4 w-4 text-green-400 mt-0.5 mr-3 flex-shrink-0" />
-                    <p className="text-sm text-gray-300">{rec}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+          <Grid container spacing={2} mt={3}>
+            <Grid item xs={12} md={6}>
+              <Paper elevation={1} className="treasury-risk-card" sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                <Box display="flex" alignItems="center" mb={2}>
+                  <WarningAmberIcon color="warning" className="treasury-risk-icon" />
+                  <Typography variant="subtitle1" fontWeight={600}>Risk Factors</Typography>
+                </Box>
+                <Box>
+                  {treasuryData.risk_factors?.map((risk: string, index: number) => (
+                    <Box key={index} display="flex" alignItems="center" mb={1}>
+                      <Box className="treasury-risk-dot" />
+                      <Typography variant="body2" color="text.secondary">{risk}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper elevation={1} className="treasury-recommend-card" sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                <Box display="flex" alignItems="center" mb={2}>
+                  <CheckCircleIcon color="success" className="treasury-recommend-icon" />
+                  <Typography variant="subtitle1" fontWeight={600}>AI Recommendations</Typography>
+                </Box>
+                <Box>
+                  {treasuryData.recommendations?.map((rec: string, index: number) => (
+                    <Box key={index} display="flex" alignItems="center" mb={1}>
+                      <CheckCircleIcon color="success" fontSize="small" className="treasury-recommend-dot" />
+                      <Typography variant="body2" color="text.secondary">{rec}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
 
-          {/* Rebalancing Suggestions */}
+
           {treasuryData.rebalancing_suggestions && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <h3 className="text-lg font-semibold text-white mb-4">Rebalancing Suggestions</h3>
-              <div className="space-y-4">
+            <Paper elevation={2} className="treasury-section" sx={{ mt: { xs: 3, sm: 4 }, px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 3 }, borderRadius: 2 }}>
+              <Typography variant="h6" fontWeight={600} mb={2}>Rebalancing Suggestions</Typography>
+              <Grid container spacing={2}>
                 {treasuryData.rebalancing_suggestions.map((suggestion: any, index: number) => (
-                  <div key={index} className="p-4 bg-slate-700 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-white">{suggestion.action}</h4>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        suggestion.priority === 'high' ? 'bg-red-500/20 text-red-400' :
-                        suggestion.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-blue-500/20 text-blue-400'
-                      }`}>
-                        {suggestion.priority}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-300 mb-2">{suggestion.description}</p>
-                    <p className="text-xs text-gray-400">Impact: {suggestion.estimated_impact}</p>
-                  </div>
+                  <Grid item xs={12} key={index}>
+                    <Paper elevation={1} className="treasury-rebalance-card" sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+                        <Typography variant="subtitle2" fontWeight={600}>{suggestion.action}</Typography>
+                        <Chip label={suggestion.priority} color={suggestion.priority === 'high' ? 'error' : suggestion.priority === 'medium' ? 'warning' : 'primary'} />
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" mb={1}>{suggestion.description}</Typography>
+                      <Typography variant="caption" color="text.secondary">Impact: {suggestion.estimated_impact}</Typography>
+                    </Paper>
+                  </Grid>
                 ))}
-              </div>
-            </motion.div>
+              </Grid>
+            </Paper>
           )}
         </>
       )}
-    </div>
+  </div>
   );
 };
 
-export default TreasuryAnalysis; 
+export default TreasuryAnalysis;

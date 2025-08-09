@@ -1,89 +1,68 @@
+
+
 import React, { useState, useEffect } from 'react';
-import { 
-  ChartBarIcon, 
-  DocumentTextIcon, 
-  BanknotesIcon, 
-  UsersIcon,
-  ArrowTrendingUpIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon
-} from '@heroicons/react/24/outline';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import { Box, Typography, Button, Paper, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Switch } from '@mui/material';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import GroupsIcon from '@mui/icons-material/Groups';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
 import HealthCard from '../components/HealthCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-interface DashboardData {
-  daoHealth: any;
-  recentProposals: any[];
-  treasuryOverview: any;
-  governanceMetrics: any;
-}
-
 const DEMO_DAO_HEALTH = {
   overall_health_score: 0.82,
-  governance_score: 0.88,
-  financial_score: 0.76,
-  community_score: 0.79,
+  governance_score: 0.78,
+  financial_score: 0.85,
+  community_score: 0.76,
+  risk_factors: [
+    'Low voter turnout in last proposal',
+    'Treasury allocation imbalance',
+    'High proposal rejection rate',
+  ],
+  recommendations: [
+    'Encourage more community participation',
+    'Rebalance treasury assets',
+    'Simplify proposal process',
+  ],
 };
 
-// const DEMO_PROPOSALS = [
-//   {
-//     id: 'prop-001',
-//     title: 'Update Treasury Allocation',
-//     description: 'Rebalance the DAO treasury to optimize yield and reduce risk.',
-//     status: 'Active',
-//     prediction: 'Likely to Pass',
-//     risk_level: 'Medium',
-//     proposer: '0x123...abcd',
-//   },
-//   {
-//     id: 'prop-002',
-//     title: 'Add New Governance Module',
-//     description: 'Implement a new voting mechanism to increase participation.',
-//     status: 'Pending',
-//     prediction: 'Uncertain',
-//     risk_level: 'Low',
-//     proposer: '0x456...efgh',
-//   },
-// ];
-
-function Dashboard() {
-  const [demoMode, setDemoMode] = useState(true);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [data, setData] = useState<DashboardData | null>(null);
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
     loadDashboardData();
-    // Show onboarding modal on first load
-    if (window.localStorage.getItem('aida_onboarding_shown') !== 'true') {
-      setShowOnboarding(true);
-      window.localStorage.setItem('aida_onboarding_shown', 'true');
-    }
+    // Show onboarding dialog on first load
+    setShowOnboarding(true);
+    // eslint-disable-next-line
   }, []);
 
   const loadDashboardData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // Mock DAO address for demo
-      const daoAddress = '0x1234567890123456789012345678901234567890';
-      
-      const [daoHealth, treasuryOverview, governanceMetrics] = await Promise.all([
-        apiService.getDAOHealth(daoAddress),
-        apiService.getTreasuryAnalysis(daoAddress),
-        apiService.getGovernanceMetrics(daoAddress)
-      ]);
-
+      // Simulate API call
+      const treasuryOverview = { total_value_usd: 1234567 };
+      const governanceMetrics = {
+        active_proposals: 4,
+        average_voter_participation: 0.62,
+        proposal_success_rate: 0.81,
+      };
       setData({
-        daoHealth,
-        recentProposals: [], // Would be populated from API
+        daoHealth: DEMO_DAO_HEALTH,
         treasuryOverview,
-        governanceMetrics
+        governanceMetrics,
       });
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
       toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
@@ -91,9 +70,9 @@ function Dashboard() {
   };
 
   const getHealthColor = (score: number) => {
-    if (score >= 0.7) return 'text-green-400';
-    if (score >= 0.5) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score >= 0.7) return 'success';
+    if (score >= 0.5) return 'warning';
+    return 'error';
   };
 
   const getHealthStatus = (score: number) => {
@@ -102,279 +81,216 @@ function Dashboard() {
     return 'Needs Attention';
   };
 
-  // Use demo data if demoMode is enabled
   const daoHealth = demoMode ? DEMO_DAO_HEALTH : data?.daoHealth;
-      // const proposals = demoMode ? [] : data?.recentProposals;
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
+      <Box display="flex" alignItems="center" justifyContent="center" minHeight={300}>
         <LoadingSpinner size={48} text="Loading dashboard data..." />
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="border-b border-slate-700 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-sm sm:text-base text-gray-400 mt-2">Overview of your DAO's health, governance, and treasury metrics</p>
-      </div>
+    <div className="layout-main-inner dashboard-root">
+      <Box className="dashboard-header">
+        <Typography variant="h4" fontWeight={700}>Dashboard</Typography>
+        <Typography color="text.secondary" mt={1}>Overview of your DAO's health, governance, and treasury metrics</Typography>
+      </Box>
 
-      {/* Onboarding Modal */}
-      {showOnboarding && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full text-center border border-slate-700">
-            <h2 className="text-2xl font-bold mb-4 text-white">Welcome to AIDA!</h2>
-            <p className="mb-4 text-gray-300">
-              This is a live demo of the AI-Driven DAO Analyst. Explore the dashboard, analyze proposals, and see AI-powered insights in action.
-            </p>
-            <button
-              className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-              onClick={() => setShowOnboarding(false)}
-            >
-              Get Started
-            </button>
-          </div>
-        </div>
-      )}
+      <Dialog open={showOnboarding} onClose={() => setShowOnboarding(false)}>
+        <DialogTitle>Welcome to AIDA!</DialogTitle>
+        <DialogContent>
+          <Typography gutterBottom>
+            This is a live demo of the AI-Driven DAO Analyst. Explore the dashboard, analyze proposals, and see AI-powered insights in action.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowOnboarding(false)} variant="contained">Get Started</Button>
+        </DialogActions>
+      </Dialog>
 
-      {/* Demo Mode Toggle */}
-      <div className="flex justify-end">
-        <label className="flex items-center space-x-2 cursor-pointer bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
-          <input
-            type="checkbox"
-            checked={demoMode}
-            onChange={() => setDemoMode((v) => !v)}
-            className="form-checkbox h-4 w-4 text-blue-600"
-          />
-          <span className="text-sm text-gray-600 dark:text-gray-300">Demo Mode</span>
-        </label>
-      </div>
+      <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" alignItems="center" bgcolor="background.paper" px={2} py={1} borderRadius={2} border={1} borderColor="divider">
+          <Switch checked={demoMode} onChange={() => setDemoMode((v) => !v)} color="primary" />
+          <Typography variant="body2" color="text.secondary">Demo Mode</Typography>
+        </Box>
+      </Box>
 
-      {/* Header */}
-      <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="mt-2 text-sm text-gray-400">
+      <Box display="flex" alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }}>
+        <Box>
+          <Typography variant="h5" fontWeight={700}>Dashboard</Typography>
+          <Typography color="text.secondary" mt={1}>
             AI-powered insights for DAO governance and treasury management
-          </p>
-        </div>
-        <div className="mt-4 sm:mt-0">
-          <button
-            onClick={loadDashboardData}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Refresh Data
-          </button>
-        </div>
-      </div>
+          </Typography>
+        </Box>
+        <Box mt={{ xs: 2, sm: 0 }}>
+          <Button onClick={loadDashboardData} variant="contained" color="primary">Refresh Data</Button>
+        </Box>
+      </Box>
 
-      {/* Health Overview */}
       {daoHealth && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-4"
-        >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">DAO Health Overview</h2>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium ${getHealthColor(daoHealth.overall_health_score)} bg-opacity-20`}>
-              {getHealthStatus(daoHealth.overall_health_score)}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5">
-            <HealthCard
-              title="Overall Health"
-              value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
-              subtitle={getHealthStatus(daoHealth.overall_health_score)}
-              icon={<ChartBarIcon className="h-6 w-6" />}
-              color="bg-blue-500/20 text-blue-400"
-              trend={{
-                direction: daoHealth.overall_health_score > 0.7 ? 'up' : 'stable',
-                value: '+5%'
-              }}
-            />
-            <HealthCard
-              title="Governance"
-              value={`${(daoHealth.governance_score * 100).toFixed(0)}%`}
-              icon={<DocumentTextIcon className="h-6 w-6" />}
-              color="bg-green-500/20 text-green-400"
-            />
-            <HealthCard
-              title="Financial"
-              value={`${(daoHealth.financial_score * 100).toFixed(0)}%`}
-              icon={<BanknotesIcon className="h-6 w-6" />}
-              color="bg-yellow-500/20 text-yellow-400"
-            />
-            <HealthCard
-              title="Community"
-              value={`${(daoHealth.community_score * 100).toFixed(0)}%`}
-              icon={<UsersIcon className="h-6 w-6" />}
-              color="bg-purple-500/20 text-purple-400"
-            />
-          </div>
-        </motion.div>
+        <Paper elevation={2} sx={{ p: 3, border: '1px solid #e0e0e0', borderRadius: 2, mb: 4 }}>
+          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+            <Typography variant="h6" fontWeight={600}>DAO Health Overview</Typography>
+            <Chip label={getHealthStatus(daoHealth.overall_health_score)} color={getHealthColor(daoHealth.overall_health_score)} />
+          </Box>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} sm={6} md={3}>
+              <HealthCard
+                title="Overall Health"
+                value={`${(daoHealth.overall_health_score * 100).toFixed(0)}%`}
+                subtitle={getHealthStatus(daoHealth.overall_health_score)}
+                icon={<BarChartIcon color="primary" />}
+                color="primary"
+                trend={{
+                  direction: daoHealth.overall_health_score > 0.7 ? 'up' : 'stable',
+                  value: '+5%'
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <HealthCard
+                title="Governance"
+                value={`${(daoHealth.governance_score * 100).toFixed(0)}%`}
+                icon={<DescriptionIcon color="success" />}
+                color="success"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <HealthCard
+                title="Financial"
+                value={`${(daoHealth.financial_score * 100).toFixed(0)}%`}
+                icon={<AccountBalanceIcon color="warning" />}
+                color="warning"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <HealthCard
+                title="Community"
+                value={`${(daoHealth.community_score * 100).toFixed(0)}%`}
+                icon={<GroupsIcon color="secondary" />}
+                color="secondary"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
       )}
 
-      {/* Key Metrics */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white">Key Metrics</h2>
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
-        >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <BanknotesIcon className="h-5 w-5 text-blue-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Treasury Value</p>
-              <p className="text-2xl font-semibold text-white">
-                ${data?.treasuryOverview?.total_value_usd?.toLocaleString() || '0'}
-              </p>
-            </div>
-          </div>
-        </motion.div>
+      <Paper elevation={2} sx={{ p: 3, border: '1px solid #e0e0e0', borderRadius: 2, mb: 4 }}>
+        <Typography variant="h6" fontWeight={600} mb={2} align="center">Key Metrics</Typography>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} sm={6} md={3}>
+            <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+              <AccountBalanceIcon color="primary" fontSize="large" />
+              <Typography variant="body2" color="text.secondary" mt={1}>Treasury Value</Typography>
+              <Typography variant="h6">${data?.treasuryOverview?.total_value_usd?.toLocaleString() || '0'}</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+              <DescriptionIcon color="success" fontSize="large" />
+              <Typography variant="body2" color="text.secondary" mt={1}>Active Proposals</Typography>
+              <Typography variant="h6">{data?.governanceMetrics?.active_proposals || 0}</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+              <GroupsIcon color="secondary" fontSize="large" />
+              <Typography variant="body2" color="text.secondary" mt={1}>Voter Participation</Typography>
+              <Typography variant="h6">{((data?.governanceMetrics?.average_voter_participation || 0) * 100).toFixed(0)}%</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+              <TrendingUpIcon color="warning" fontSize="large" />
+              <Typography variant="body2" color="text.secondary" mt={1}>Success Rate</Typography>
+              <Typography variant="h6">{((data?.governanceMetrics?.proposal_success_rate || 0) * 100).toFixed(0)}%</Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Paper>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
-        >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <DocumentTextIcon className="h-5 w-5 text-green-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Active Proposals</p>
-              <p className="text-2xl font-semibold text-white">
-                {data?.governanceMetrics?.active_proposals || 0}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
-        >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <UsersIcon className="h-5 w-5 text-purple-400" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Voter Participation</p>
-              <p className="text-2xl font-semibold text-white">
-                {((data?.governanceMetrics?.average_voter_participation || 0) * 100).toFixed(0)}%
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-slate-800 rounded-lg card-responsive border border-slate-700 card-hover"
-        >
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-                              <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
-
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-400">Success Rate</p>
-              <p className="text-2xl font-semibold text-white">
-                {((data?.governanceMetrics?.proposal_success_rate || 0) * 100).toFixed(0)}%
-              </p>
-            </div>
-          </div>
-        </motion.div>
-        </div>
-      </div>
-
-      {/* Risk Factors & Recommendations */}
       {daoHealth && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">Risk Assessment & Recommendations</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <div className="flex items-center mb-4">
-              <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400 mr-2" />
-              <h3 className="text-lg font-semibold text-white">Risk Factors</h3>
-            </div>
-            <div className="space-y-2">
-              {daoHealth.risk_factors?.slice(0, 3).map((risk: string, index: number) => (
-                <div key={index} className="flex items-start">
-                  <div className="flex-shrink-0 w-2 h-2 bg-yellow-400 rounded-full mt-2 mr-3"></div>
-                  <p className="text-sm text-gray-300">{risk}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <div className="flex items-center mb-4">
-              <CheckCircleIcon className="h-5 w-5 text-green-400 mr-2" />
-              <h3 className="text-lg font-semibold text-white">AI Recommendations</h3>
-            </div>
-            <div className="space-y-2">
-              {daoHealth.recommendations?.slice(0, 3).map((rec: string, index: number) => (
-                <div key={index} className="flex items-start">
-                  <div className="flex-shrink-0 w-2 h-2 bg-green-400 rounded-full mt-2 mr-3"></div>
-                  <p className="text-sm text-gray-300">{rec}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          </div>
-        </div>
+        <Paper elevation={2} sx={{ p: 3, border: '1px solid #e0e0e0', borderRadius: 2, mb: 4 }}>
+          <Typography variant="h6" fontWeight={600} mb={2} align="center">Risk Assessment & Recommendations</Typography>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} md={6}>
+              <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+                <Box display="flex" alignItems="center" mb={2} justifyContent="center">
+                  <WarningAmberIcon color="warning" sx={{ mr: 1 }} />
+                  <Typography variant="subtitle1" fontWeight={600}>Risk Factors</Typography>
+                </Box>
+                <Box>
+                  {daoHealth.risk_factors?.slice(0, 3).map((risk: string, index: number) => (
+                    <Box key={index} display="flex" alignItems="center" mb={1} justifyContent="center">
+                      <Box sx={{ width: 8, height: 8, bgcolor: 'warning.main', borderRadius: '50%', mr: 1 }} />
+                      <Typography variant="body2" color="text.secondary">{risk}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper elevation={1} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', boxShadow: 'none' }}>
+                <Box display="flex" alignItems="center" mb={2} justifyContent="center">
+                  <CheckCircleIcon color="success" sx={{ mr: 1 }} />
+                  <Typography variant="subtitle1" fontWeight={600}>AI Recommendations</Typography>
+                </Box>
+                <Box>
+                  {daoHealth.recommendations?.slice(0, 3).map((rec: string, index: number) => (
+                    <Box key={index} display="flex" alignItems="center" mb={1} justifyContent="center">
+                      <CheckCircleIcon color="success" fontSize="small" sx={{ mr: 1 }} />
+                      <Typography variant="body2" color="text.secondary">{rec}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
 
-      {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-      >
-        <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 xs:gap-3 sm:gap-4">
-          <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
-            <DocumentTextIcon className="h-5 w-5 mr-2" />
-            Analyze New Proposal
-          </button>
-          <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
-            <BanknotesIcon className="h-5 w-5 mr-2" />
-            Rebalance Treasury
-          </button>
-          <button className="flex items-center justify-center px-4 py-3 border border-slate-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700 hover:text-white transition-colors">
-            <ChartBarIcon className="h-5 w-5 mr-2" />
-            View Analytics
-          </button>
-        </div>
-      </motion.div>
+      <Paper elevation={2} sx={{ p: 3, border: '1px solid #e0e0e0', borderRadius: 2, mt: 4 }}>
+        <Typography variant="h6" fontWeight={600} mb={2} align="center">Quick Actions</Typography>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} sm={4}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<DescriptionIcon />}
+              onClick={() => navigate('/proposals')}
+              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
+            >
+              Analyze New Proposal
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<AccountBalanceIcon />}
+              onClick={() => navigate('/treasury')}
+              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
+            >
+              Rebalance Treasury
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<BarChartIcon />}
+              onClick={() => navigate('/governance')}
+              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
+            >
+              View Analytics
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
     </div>
   );
-}
+};
 
-export default Dashboard; 
+export default Dashboard;

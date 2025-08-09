@@ -1,137 +1,214 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  ChartBarIcon, 
-  DocumentTextIcon, 
-  BanknotesIcon, 
-  UsersIcon,
-  Bars3Icon,
-  XMarkIcon
-} from '@heroicons/react/24/outline';
 import WalletConnect from './WalletConnect';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import MenuIcon from '@mui/icons-material/Menu';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import GroupsIcon from '@mui/icons-material/Groups';
+import CloseIcon from '@mui/icons-material/Close';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
 
-  const navigation = [
-    { name: 'Dashboard', href: '/', icon: ChartBarIcon },
-    { name: 'Proposal Analysis', href: '/proposals', icon: DocumentTextIcon },
-    { name: 'Treasury Analysis', href: '/treasury', icon: BanknotesIcon },
-    { name: 'Governance Metrics', href: '/governance', icon: UsersIcon },
-  ];
 
-  return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      {/* Skip to content link for accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only absolute top-2 left-2 z-50 bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Skip to main content
-      </a>
-      {/* Mobile sidebar */}
-      <div className={`fixed inset-0 z-50 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-slate-800">
-          <div className="flex h-16 items-center justify-between px-4">
-            <h1 className="text-xl font-bold text-white">AIDA</h1>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="text-gray-400 hover:text-white"
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-          <nav className="flex-1 space-y-1 px-2 py-4">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                    isActive
-                      ? 'bg-slate-700 text-white'
-                      : 'text-gray-300 hover:bg-slate-700 hover:text-white'
-                  }`}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <item.icon className="mr-3 h-5 w-5" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      </div>
-
-      {/* Desktop sidebar */}
-      <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-        <div className="flex flex-col flex-grow bg-slate-800 pt-5 pb-4 overflow-y-auto">
-          <div className="flex items-center flex-shrink-0 px-4">
-            <h1 className="text-2xl font-bold text-white">AIDA</h1>
-            <span className="ml-2 text-xs text-gray-400">v1.0.0</span>
-          </div>
-          <nav className="mt-8 flex-1 space-y-1 px-2">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-                    isActive
-                      ? 'bg-slate-700 text-white'
-                      : 'text-gray-300 hover:bg-slate-700 hover:text-white'
-                  }`}
-                >
-                  <item.icon className="mr-3 h-5 w-5" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      </div>
-
-      {/* Top bar */}
-      <header className="sticky top-0 z-40 md:pl-64 w-full bg-slate-800 border-b border-slate-700" role="banner" aria-label="Main navigation">
-        <div className="flex items-center px-4 py-3">
-            <button
-              type="button"
-              className="-m-2.5 p-2.5 text-gray-400 md:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Bars3Icon className="h-6 w-6" />
-          </button>
-
-          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <div className="flex flex-1 items-center">
-              <h2 className="text-base sm:text-lg font-semibold text-white truncate">
-                <span className="hidden sm:inline">AI-Driven DAO Analyst</span>
-                <span className="sm:hidden">AIDA</span>
-              </h2>
-            </div>
-            <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <WalletConnect />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main id="main-content" className="md:pl-64 w-full px-3 xs:px-4 sm:px-6 py-3 xs:py-4 sm:py-6 md:py-8" role="main" aria-label="Main content">
-        <div className="max-w-7xl mx-auto">
-          {children}
-        </div>
-      </main>
-    </div>
-  );
+import type { ReactNode, FC } from 'react';
+type LayoutProps = {
+  children: ReactNode;
 };
 
-export default Layout; 
+const navigation = [
+  { name: 'Dashboard', href: '/', icon: <BarChartIcon /> },
+  { name: 'Proposal Analysis', href: '/proposals', icon: <DescriptionIcon /> },
+  { name: 'Treasury Analysis', href: '/treasury', icon: <AccountBalanceIcon /> },
+  { name: 'Governance Metrics', href: '/governance', icon: <GroupsIcon /> },
+];
+
+const Layout: FC<LayoutProps> = ({ children }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+
+  // Permanent drawer (desktop)
+  const permanentDrawer = (
+    <Box className="layout-drawer">
+      <Box className="layout-drawer-header">
+        <Typography variant="h6" noWrap component="div" className="layout-drawer-title">
+          AIDA
+        </Typography>
+      </Box>
+      <Typography variant="caption" className="layout-drawer-version">v1.0.0</Typography>
+      <Divider className="layout-drawer-divider" />
+      <List>
+        {navigation.map((item) => {
+          const isActive = location.pathname === item.href;
+          return (
+            <ListItem key={item.name} disablePadding>
+              <ListItemButton
+                component={Link}
+                to={item.href}
+                selected={isActive}
+                onClick={() => setMobileOpen(false)}
+              >
+                <ListItemIcon className="layout-drawer-icon">{item.icon}</ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+      <Box className="layout-drawer-grow" />
+    </Box>
+  );
+
+  // Mobile drawer (temporary)
+  const mobileDrawer = (
+    <Box className="layout-drawer">
+      <Box className="layout-drawer-header">
+        <Typography variant="h6" noWrap component="div" className="layout-drawer-title">
+          AIDA
+        </Typography>
+        <IconButton onClick={() => setMobileOpen(false)} className="layout-drawer-close">
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Typography variant="caption" className="layout-drawer-version">v1.0.0</Typography>
+      <Divider className="layout-drawer-divider" />
+      <List>
+        {navigation.map((item) => {
+          const isActive = location.pathname === item.href;
+          return (
+            <ListItem key={item.name} disablePadding>
+              <ListItemButton
+                component={Link}
+                to={item.href}
+                selected={isActive}
+                onClick={() => setMobileOpen(false)}
+              >
+                <ListItemIcon className="layout-drawer-icon">{item.icon}</ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+      <Box className="layout-drawer-grow" />
+    </Box>
+  );
+
+  return (
+    <Box className="layout-root">
+      <AppBar position="fixed" className="layout-appbar" color="primary" elevation={1}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            minHeight: 64,
+            px: { xs: 2, sm: 3, md: 4 },
+          }}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => setMobileOpen(true)}
+            className="layout-appbar-menu"
+            sx={{ mr: 2, display: { md: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Typography variant="h6" noWrap component="div" className="layout-appbar-title">
+              <span className="brand-full">AI-Driven DAO Analyst</span>
+              <span className="brand-short">AIDA</span>
+            </Typography>
+            <Typography variant="caption" color="#e0e0e0" sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 400, lineHeight: 1, mt: 0.25 }}>
+              Secure, non-custodial wallet connection
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: { xs: 1, sm: 2 } }}>
+            <WalletConnect />
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        className="layout-drawer-permanent"
+        open
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: { md: '18vw', lg: '15vw', xl: '13vw' },
+            minWidth: '12rem',
+            maxWidth: '16.25rem',
+            boxSizing: 'border-box',
+            top: '4rem',
+            height: 'calc(100% - 4rem)',
+            transition: 'width 0.2s',
+          },
+        }}
+      >
+        {permanentDrawer}
+      </Drawer>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
+        className="layout-drawer-mobile"
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': {
+            width: '75vw',
+            minWidth: '12rem',
+            maxWidth: '20rem',
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        {mobileDrawer}
+      </Drawer>
+      <Box
+        component="main"
+        className="layout-main"
+        sx={{
+          flexGrow: 1,
+          paddingTop: '4rem',
+          marginLeft: { md: '18vw', lg: '15vw', xl: '13vw', xs: 0 },
+          transition: 'margin-left 0.2s',
+          background: '#f8fafc',
+          minHeight: '100vh',
+        }}
+      >
+        <Box
+          className="layout-main-inner"
+          sx={{
+            px: { xs: 2, sm: 3, md: 4, lg: 5 },
+            py: { xs: 2, sm: 3 },
+            maxWidth: '90vw',
+            margin: '0 auto',
+            width: '100%',
+            boxSizing: 'border-box',
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    </Box>
+  );
+
+};
+
+export default Layout;

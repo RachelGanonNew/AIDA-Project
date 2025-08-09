@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  UsersIcon, 
-  ChartBarIcon,
-  ArrowTrendingUpIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  DocumentTextIcon
-} from '@heroicons/react/24/outline';
+import Grid from '@mui/material/Grid';
+import { Box, Typography, Paper, Chip, CircularProgress } from '@mui/material';
+import GroupsIcon from '@mui/icons-material/Groups';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
@@ -36,204 +33,137 @@ const GovernanceMetrics: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
+      <Box display="flex" alignItems="center" justifyContent="center" minHeight={300}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="heading-responsive font-bold text-white">Governance Metrics</h1>
-        <p className="mt-2 text-responsive text-gray-400">
+  <div className="layout-main-inner govmetrics-root">
+
+      <Box>
+        <Typography variant="h4" fontWeight={700}>Governance Metrics</Typography>
+  <Typography color="text.secondary" mt={0}>
           Comprehensive governance analytics and AI-powered predictions
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {metrics && (
         <>
-          {/* Key Metrics */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <DocumentTextIcon className="h-5 w-5 text-blue-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Total Proposals</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {metrics.total_proposals}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <ClockIcon className="h-5 w-5 text-green-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Active Proposals</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {metrics.active_proposals}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+          <Paper elevation={2} sx={{ px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 3 }, pb: { xs: 4, sm: 6 }, mb: { xs: 2, sm: 3, md: 4 }, borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Grid container spacing={2} alignItems="stretch">
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <DescriptionIcon color="primary" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Total Proposals</Typography>
+                  <Typography variant="h6">{metrics.total_proposals}</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <AccessTimeIcon color="success" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Active Proposals</Typography>
+                  <Typography variant="h6">{metrics.active_proposals}</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <GroupsIcon color="secondary" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Voter Participation</Typography>
+                  <Typography variant="h6">{(metrics.average_voter_participation * 100).toFixed(0)}%</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper elevation={1} sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <TrendingUpIcon color="warning" />
+                <Box ml={2}>
+                  <Typography variant="body2" color="text.secondary">Success Rate</Typography>
+                  <Typography variant="h6">{(metrics.proposal_success_rate * 100).toFixed(0)}%</Typography>
+                </Box>
+              </Paper>
+            </Grid>
+            </Grid>
+          </Paper>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <UsersIcon className="h-5 w-5 text-purple-400" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Voter Participation</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {(metrics.average_voter_participation * 100).toFixed(0)}%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-            >
-              <div className="flex items-center">
-                <ArrowTrendingUpIcon className="h-5 w-5 text-yellow-400" />
-
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-400">Success Rate</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {(metrics.proposal_success_rate * 100).toFixed(0)}%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Governance Trends */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">Governance Trends</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+          <Paper elevation={2} sx={{ p: 3, mt: 3 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>Governance Trends</Typography>
+            <Grid container spacing={2}>
               {Object.entries(metrics.governance_trends).map(([key, value]: [string, any]) => (
-                <div key={key} className="p-4 bg-slate-700 rounded-lg">
-                  <h4 className="font-medium text-white mb-2 capitalize">
-                    {key.replace('_', ' ')}
-                  </h4>
-                  <div className={`inline-flex items-center px-2 py-1 rounded text-sm font-medium ${
-                    value === 'increasing' ? 'bg-green-500/20 text-green-400' :
-                    value === 'decreasing' ? 'bg-red-500/20 text-red-400' :
-                    'bg-blue-500/20 text-blue-400'
-                  }`}>
-                    {value}
-                  </div>
-                </div>
+                <Grid item xs={12} sm={6} md={4} key={key}>
+                  <Paper elevation={1} className={`govmetrics-trend-card ${value}`} sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                    <Typography variant="subtitle2" fontWeight={600} mb={1} className="govmetrics-trend-title">{key.replace('_', ' ')}</Typography>
+                    <Chip label={value} color={value === 'increasing' ? 'success' : value === 'decreasing' ? 'error' : 'primary'} />
+                  </Paper>
+                </Grid>
               ))}
-            </div>
-          </motion.div>
+            </Grid>
+          </Paper>
 
-          {/* Top Voters */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">Top Voters</h2>
-            <div className="space-y-3">
+
+          <Paper elevation={2} className="govmetrics-section" sx={{ px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 3 }, pb: { xs: 7, sm: 9 }, mb: 3, mt: 4, borderRadius: 2 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>Top Voters</Typography>
+            <Grid container spacing={2}>
               {metrics.top_voters?.map((voter: any, index: number) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-medium text-white">
-                      {index + 1}
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-white">{voter.address}</p>
-                      <p className="text-xs text-gray-400">{voter.votes} votes</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-white">
-                      {(voter.percentage * 100).toFixed(1)}%
-                    </p>
-                  </div>
-                </div>
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Paper elevation={1} className="govmetrics-voter-card" sx={{ p: 2, height: '100%', display: 'flex', alignItems: 'center', border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                    <Box display="flex" alignItems="center" width="100%">
+                      <Box className="govmetrics-voter-rank" style={{ fontSize: '1.25rem', minWidth: 32, textAlign: 'center', fontWeight: 700 }}>{index + 1}</Box>
+                      <Box ml={2} flex={1}>
+                        <Typography variant="subtitle1" fontWeight={600}>{voter.address}</Typography>
+                        <Typography variant="body2" color="text.secondary">{voter.votes} votes</Typography>
+                      </Box>
+                      <Typography variant="h6" fontWeight={700} color="primary">{(voter.percentage * 100).toFixed(1)}%</Typography>
+                    </Box>
+                  </Paper>
+                </Grid>
               ))}
-            </div>
-          </motion.div>
+            </Grid>
+          </Paper>
 
-          {/* AI Predictions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">AI Predictions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <div>
-                <h3 className="text-md font-medium text-white mb-3">Next Month Forecast</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Voter Participation</span>
-                    <span className="text-white">
-                      {(metrics.predictions.next_month_participation * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Success Probability</span>
-                    <span className="text-white">
-                      {(metrics.predictions.proposal_success_probability * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-md font-medium text-white mb-3">Trending Topics</h3>
-                <div className="space-y-2">
+
+          <Paper elevation={2} className="govmetrics-section" sx={{ px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 3 }, mb: 3, borderRadius: 2 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>AI Predictions</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Typography variant="subtitle1" fontWeight={600} mb={1}>Next Month Forecast</Typography>
+                <Box>
+                  <Box display="flex" justifyContent="space-between" mb={1}>
+                    <Typography color="text.secondary">Voter Participation</Typography>
+                    <Typography>{(metrics.predictions.next_month_participation * 100).toFixed(0)}%</Typography>
+                  </Box>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography color="text.secondary">Success Probability</Typography>
+                    <Typography>{(metrics.predictions.proposal_success_probability * 100).toFixed(0)}%</Typography>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Typography variant="subtitle1" fontWeight={600} mb={1}>Trending Topics</Typography>
+                <Box>
                   {metrics.predictions.trending_topics?.map((topic: string, index: number) => (
-                    <div key={index} className="flex items-center">
-                      <div className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
-                      <span className="text-sm text-gray-300 capitalize">
-                        {topic.replace('_', ' ')}
-                      </span>
-                    </div>
+                    <Box key={index} display="flex" alignItems="center" mb={1}>
+                      <Box className="govmetrics-topic-dot" />
+                      <Typography variant="body2" color="text.secondary" className="govmetrics-topic-title">{topic.replace('_', ' ')}</Typography>
+                    </Box>
                   ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+                </Box>
+              </Grid>
+            </Grid>
+          </Paper>
 
-          {/* Performance Chart */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="bg-slate-800 rounded-lg p-6 border border-slate-700"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">Voting Performance</h2>
-            <div className="h-64">
+
+          <Paper elevation={2} className="govmetrics-section" sx={{ px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 3 }, mb: 3, borderRadius: 2 }}>
+            <Typography variant="h6" fontWeight={600} mb={2}>Voting Performance</Typography>
+            <Box height={256}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={[
                   { month: 'Jan', participation: 65, success: 70 },
@@ -250,12 +180,12 @@ const GovernanceMetrics: React.FC = () => {
                   <Bar dataKey="success" fill="#10B981" name="Success %" />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
-          </motion.div>
+            </Box>
+          </Paper>
         </>
       )}
-    </div>
+  </div>
   );
 };
 
-export default GovernanceMetrics; 
+export default GovernanceMetrics;
