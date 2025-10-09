@@ -69,4 +69,10 @@ Thumbs.db
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp  
+# Local artifacts and large files
+artifacts/
+*.mp4
+*.pdf
+*.zip
+

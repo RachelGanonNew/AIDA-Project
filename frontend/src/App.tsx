@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import ProposalAnalysis from './pages/ProposalAnalysis';
 import TreasuryAnalysis from './pages/TreasuryAnalysis';
 import GovernanceMetrics from './pages/GovernanceMetrics';
+import HathorShowcase from './pages/HathorShowcase';
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ function App() {
             <Route path="/proposals" element={<ProposalAnalysis />} />
             <Route path="/treasury" element={<TreasuryAnalysis />} />
             <Route path="/governance" element={<GovernanceMetrics />} />
+            <Route path="/hathor" element={<HathorShowcase />} />
           </Routes>
         </Layout>
       </Router>

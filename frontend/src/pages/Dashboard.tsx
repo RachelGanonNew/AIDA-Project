@@ -1,6 +1,4 @@
-
-
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import { Box, Typography, Button, Paper, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Switch } from '@mui/material';
@@ -12,7 +10,6 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import toast from 'react-hot-toast';
-import { apiService } from '../services/apiService';
 import HealthCard from '../components/HealthCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -33,7 +30,7 @@ const DEMO_DAO_HEALTH = {
   ],
 };
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -42,26 +39,27 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadDashboardData();
-    // Show onboarding dialog on first load
-    setShowOnboarding(true);
-    // eslint-disable-next-line
+    const seen = sessionStorage.getItem('aida_welcome_shown');
+    if (!seen) setShowOnboarding(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+    sessionStorage.setItem('aida_welcome_shown', '1');
+  };
 
   const loadDashboardData = async () => {
     setLoading(true);
     try {
-      // Simulate API call
+      // Placeholder demo data; wire to API if needed
       const treasuryOverview = { total_value_usd: 1234567 };
       const governanceMetrics = {
         active_proposals: 4,
         average_voter_participation: 0.62,
         proposal_success_rate: 0.81,
       };
-      setData({
-        daoHealth: DEMO_DAO_HEALTH,
-        treasuryOverview,
-        governanceMetrics,
-      });
+      setData({ daoHealth: DEMO_DAO_HEALTH, treasuryOverview, governanceMetrics });
     } catch (error) {
       toast.error('Failed to load dashboard data');
     } finally {
@@ -98,7 +96,7 @@ const Dashboard = () => {
         <Typography color="text.secondary" mt={1}>Overview of your DAO's health, governance, and treasury metrics</Typography>
       </Box>
 
-      <Dialog open={showOnboarding} onClose={() => setShowOnboarding(false)}>
+      <Dialog open={showOnboarding} onClose={handleCloseOnboarding}>
         <DialogTitle>Welcome to AIDA!</DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
@@ -106,7 +104,7 @@ const Dashboard = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowOnboarding(false)} variant="contained">Get Started</Button>
+          <Button onClick={handleCloseOnboarding} variant="contained">Get Started</Button>
         </DialogActions>
       </Dialog>
 
@@ -143,10 +141,7 @@ const Dashboard = () => {
                 subtitle={getHealthStatus(daoHealth.overall_health_score)}
                 icon={<BarChartIcon color="primary" />}
                 color="primary"
-                trend={{
-                  direction: daoHealth.overall_health_score > 0.7 ? 'up' : 'stable',
-                  value: '+5%'
-                }}
+                trend={{ direction: daoHealth.overall_health_score > 0.7 ? 'up' : 'stable', value: '+5%' }}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -255,35 +250,17 @@ const Dashboard = () => {
         <Typography variant="h6" fontWeight={600} mb={2} align="center">Quick Actions</Typography>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<DescriptionIcon />}
-              onClick={() => navigate('/proposals')}
-              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
-            >
+            <Button fullWidth variant="outlined" startIcon={<DescriptionIcon />} onClick={() => navigate('/proposals')} sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}>
               Analyze New Proposal
             </Button>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<AccountBalanceIcon />}
-              onClick={() => navigate('/treasury')}
-              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
-            >
+            <Button fullWidth variant="outlined" startIcon={<AccountBalanceIcon />} onClick={() => navigate('/treasury')} sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}>
               Rebalance Treasury
             </Button>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<BarChartIcon />}
-              onClick={() => navigate('/governance')}
-              sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}
-            >
+            <Button fullWidth variant="outlined" startIcon={<BarChartIcon />} onClick={() => navigate('/governance')} sx={{ py: 2, borderRadius: 2, fontWeight: 600 }}>
               View Analytics
             </Button>
           </Grid>

@@ -121,7 +121,7 @@ class AIService:
                 self._analyze_sentiment(proposal_text),
                 self._generate_summary(proposal_text),
                 self._assess_risk(proposal_text, dao_context),
-                self._predict_outcome(proposal_text, proposer_address, dao_context),
+                asyncio.to_thread(self._predict_outcome, proposal_text, proposer_address, dao_context),
                 self._analyze_impact(proposal_text, dao_context)
             ]
             

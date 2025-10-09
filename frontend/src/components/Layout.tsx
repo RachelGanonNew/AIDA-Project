@@ -23,7 +23,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 
 
-
 import type { ReactNode, FC } from 'react';
 type LayoutProps = {
   children: ReactNode;
@@ -34,13 +33,12 @@ const navigation = [
   { name: 'Proposal Analysis', href: '/proposals', icon: <DescriptionIcon /> },
   { name: 'Treasury Analysis', href: '/treasury', icon: <AccountBalanceIcon /> },
   { name: 'Governance Metrics', href: '/governance', icon: <GroupsIcon /> },
+  { name: 'Hathor Showcase', href: '/hathor', icon: <BarChartIcon /> },
 ];
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-
-  // Permanent drawer (desktop)
   const permanentDrawer = (
     <Box className="layout-drawer">
       <Box className="layout-drawer-header">
