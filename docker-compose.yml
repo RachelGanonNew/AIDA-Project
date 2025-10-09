@@ -11,7 +11,6 @@ services:
       - DATABASE_URL=${DATABASE_URL:-sqlite:///./aida.db}
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
     volumes:
-      - ./backend:/app
       - aida_data:/app/data
     restart: unless-stopped
     networks:
@@ -26,18 +25,10 @@ services:
     environment:
       - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000}
       - REACT_APP_HATHOR_NODE_URL=${REACT_APP_HATHOR_NODE_URL:-https://node1.testnet.hathor.network/}
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     restart: unless-stopped
     networks:
       - aida-network
 
-  # Optional: Add a database service for production
-  # postgres:
-  #   image: postgres:15
-  #   environment:
-  #     - POSTGRES_DB=aida
   #     - POSTGRES_USER=aida_user
   #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   #   volumes:
