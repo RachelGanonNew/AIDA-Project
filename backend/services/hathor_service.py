@@ -5,9 +5,9 @@ import uuid
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 import logging
-import httpx
 
 from models.schemas import ActionExecutionRequest, ActionExecutionResponse, ActionType
+from hathor_integration import RealHathorIntegration
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +16,7 @@ class HathorService:
         """Initialize Hathor service"""
         self.node_url = "https://node1.testnet.hathor.network/"
         self.evm_bridge_url = "https://evm-bridge.testnet.hathor.network/"
+        self.real_hathor = RealHathorIntegration()
         
         # Mock Nano Contract addresses (in production, these would be deployed contracts)
         self.nano_contracts = {
@@ -61,7 +62,7 @@ class HathorService:
                 status=result['status'],
                 transaction_hash=result.get('transaction_hash'),
                 execution_time=result.get('execution_time'),
-                gas_used=result.get('gas_used'),
+                gas_used=0,  # Always 0 on Hathor
                 error_message=result.get('error_message'),
                 created_at=datetime.utcnow()
             )
@@ -113,13 +114,12 @@ class HathorService:
             
             # Mock transaction execution
             tx_hash = self._generate_mock_tx_hash()
-            gas_used = 150000  # Mock gas usage
             
             return {
                 'status': 'executed',
                 'transaction_hash': tx_hash,
                 'execution_time': datetime.utcnow(),
-                'gas_used': gas_used,
+                'gas_used': 0,
                 'execution_data': execution_data
             }
         except Exception as e:
@@ -152,13 +152,12 @@ class HathorService:
             }
             
             tx_hash = self._generate_mock_tx_hash()
-            gas_used = 200000  # Higher gas for complex operation
             
             return {
                 'status': 'executed',
                 'transaction_hash': tx_hash,
                 'execution_time': datetime.utcnow(),
-                'gas_used': gas_used,
+                'gas_used': 0,
                 'execution_data': execution_data
             }
         except Exception as e:
@@ -189,13 +188,12 @@ class HathorService:
             }
             
             tx_hash = self._generate_mock_tx_hash()
-            gas_used = 65000  # Standard transfer gas
             
             return {
                 'status': 'executed',
                 'transaction_hash': tx_hash,
                 'execution_time': datetime.utcnow(),
-                'gas_used': gas_used,
+                'gas_used': 0,
                 'execution_data': execution_data
             }
         except Exception as e:
@@ -223,13 +221,12 @@ class HathorService:
             }
             
             tx_hash = self._generate_mock_tx_hash()
-            gas_used = request.parameters.get('estimated_gas', 100000)
             
             return {
                 'status': 'executed',
                 'transaction_hash': tx_hash,
                 'execution_time': datetime.utcnow(),
-                'gas_used': gas_used,
+                'gas_used': 0,
                 'execution_data': execution_data
             }
         except Exception as e:
@@ -411,24 +408,44 @@ class HathorService:
             return {}
     
     async def estimate_gas_cost(self, action_type: ActionType, parameters: Dict[str, Any]) -> int:
-        """Estimate gas cost for action execution"""
+        """Estimate gas cost for action execution (always 0 on Hathor)"""
+        return 0  # Hathor is feeless!
+    
+    async def get_network_info(self) -> Dict[str, Any]:
+        """Get Hathor network information"""
         try:
-            # Mock gas estimation
-            base_costs = {
-                ActionType.PROPOSAL_EXECUTION: 150000,
-                ActionType.TREASURY_REBALANCE: 200000,
-                ActionType.TOKEN_TRANSFER: 65000,
-                ActionType.CONTRACT_INTERACTION: 100000
+            # Try real Hathor network first
+            real_info = await self.real_hathor.get_network_info()
+            if real_info.get('status') == 'connected':
+                real_info.update({
+                    "node_url": self.node_url,
+                    "nano_contracts": self.nano_contracts,
+                    "evm_bridge_status": "active"
+                })
+                return real_info
+            
+            # Fallback to mock data
+            return {
+                "network": "Hathor Testnet",
+                "node_url": self.node_url,
+                "status": "connected",
+                "block_height": 150000,
+                "network_hash_rate": "1.2 TH/s",
+                "feeless_transactions": True,
+                "avg_confirmation_time": "2 seconds",
+                "supported_features": [
+                    "Nano Contracts",
+                    "EVM Bridge",
+                    "Feeless Transactions",
+                    "Instant Finality"
+                ],
+                "nano_contracts": self.nano_contracts,
+                "evm_bridge_status": "active"
             }
-            
-            base_cost = base_costs.get(action_type, 100000)
-            
-            # Adjust based on complexity
-            complexity_multiplier = 1.0
-            if 'complexity' in parameters:
-                complexity_multiplier = parameters['complexity']
-            
-            return int(base_cost * complexity_multiplier)
         except Exception as e:
-            logger.error(f"Error estimating gas cost: {e}")
-            return 100000  # Default estimate 
+            logger.error(f"Error getting network info: {e}")
+            return {
+                "network": "Hathor Testnet",
+                "status": "disconnected",
+                "error": str(e)
+            }

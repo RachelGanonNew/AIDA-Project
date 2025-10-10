@@ -10,11 +10,18 @@ services:
       - HATHOR_NODE_URL=${HATHOR_NODE_URL:-https://node1.testnet.hathor.network/}
       - DATABASE_URL=${DATABASE_URL:-sqlite:///./aida.db}
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - ENVIRONMENT=production
+      - LOG_LEVEL=info
     volumes:
       - aida_data:/app/data
     restart: unless-stopped
     networks:
       - aida-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build:
@@ -25,9 +32,12 @@ services:
     environment:
       - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000}
       - REACT_APP_HATHOR_NODE_URL=${REACT_APP_HATHOR_NODE_URL:-https://node1.testnet.hathor.network/}
+      - REACT_APP_WEBSOCKET_URL=${REACT_APP_WEBSOCKET_URL:-ws://localhost:8000}
     restart: unless-stopped
     networks:
       - aida-network
+    depends_on:
+      - backend
 
   #     - POSTGRES_USER=aida_user
   #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

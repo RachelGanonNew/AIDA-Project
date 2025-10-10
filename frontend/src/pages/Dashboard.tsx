@@ -12,6 +12,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import toast from 'react-hot-toast';
 import HealthCard from '../components/HealthCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import PerformanceMonitor from '../components/PerformanceMonitor';
+import { useWebSocket } from '../hooks/useWebSocket';
 
 const DEMO_DAO_HEALTH = {
   overall_health_score: 0.82,
@@ -36,6 +38,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [demoMode, setDemoMode] = useState(false);
+  const { isConnected, lastMessage } = useWebSocket('0x1234567890123456789012345678901234567890');
 
   useEffect(() => {
     loadDashboardData();
@@ -95,6 +98,8 @@ const Dashboard: React.FC = () => {
         <Typography variant="h4" fontWeight={700}>Dashboard</Typography>
         <Typography color="text.secondary" mt={1}>Overview of your DAO's health, governance, and treasury metrics</Typography>
       </Box>
+
+      <PerformanceMonitor />
 
       <Dialog open={showOnboarding} onClose={handleCloseOnboarding}>
         <DialogTitle>Welcome to AIDA!</DialogTitle>

@@ -45,6 +45,18 @@ class AIDATestDemo:
             response = requests.get(f"{self.base_url}/health", timeout=10)
             success = response.status_code == 200
             self.log_test("Health Check", success, f"Status: {response.status_code}")
+            
+            # Test system status endpoint
+            status_response = requests.get(f"{self.base_url}/api/system/status", timeout=10)
+            if status_response.status_code == 200:
+                status_data = status_response.json()
+                self.log_test("System Status", True, f"Version: {status_data.get('version', 'unknown')}")
+                
+                # Test feature flags
+                features = status_data.get('features', {})
+                for feature, enabled in features.items():
+                    self.log_test(f"Feature: {feature}", enabled, "Enabled" if enabled else "Disabled")
+            
             return success
         except Exception as e:
             self.log_test("Health Check", False, f"Error: {e}")
@@ -334,7 +346,9 @@ class AIDATestDemo:
             self.test_governance_metrics,
             self.test_cross_chain_assets,
             self.test_action_execution,
-            self.test_proposal_predictions
+            self.test_proposal_predictions,
+            self.test_hathor_integration,
+            self.test_performance_metrics
         ]
         
         passed = 0
